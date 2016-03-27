@@ -7,9 +7,9 @@ import org.bukkit.material.MaterialData;
 /**
  * Created by BinaryBench on 3/17/2016.
  */
-public class BlockUtilities {
+public class BlockUtil {
 
-    private BlockUtilities()
+    private BlockUtil()
     {
     }
 

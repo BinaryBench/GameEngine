@@ -1,7 +1,7 @@
 package me.binarybench.gameengine.component.simple;
 
 import me.binarybench.gameengine.common.item.DefaultPredicate;
-import me.binarybench.gameengine.common.utils.BlockUtilities;
+import me.binarybench.gameengine.common.utils.BlockUtil;
 import me.binarybench.gameengine.component.ComponentListener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,7 +33,7 @@ public class NoBlockPlace extends ComponentListener {
     @EventHandler
     public void onPlace(BlockPlaceEvent event)
     {
-        if (playerPredicate.test(event.getPlayer()) && itemPredicate.test(BlockUtilities.toItemStack(event.getBlock())))
+        if (playerPredicate.test(event.getPlayer()) && itemPredicate.test(BlockUtil.toItemStack(event.getBlock())))
             event.setCancelled(true);
     }
 }

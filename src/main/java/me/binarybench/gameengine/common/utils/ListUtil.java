@@ -8,8 +8,8 @@ import java.util.Objects;
 /**
  * Created by BinaryBench on 3/24/2016.
  */
-public class ListUtilities {
-    private ListUtilities()
+public class ListUtil {
+    private ListUtil()
     {
     }
 

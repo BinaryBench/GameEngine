@@ -31,6 +31,12 @@ public class WorldUtil {
         return new File(Bukkit.getWorldContainer(), worldName);
     }
 
+    public static boolean isWorld(File file)
+    {
+        return !new File(file, "level.dat").exists();
+    }
+
+
     /**
      * @param worldName The name of the world.
      * @return The world named {@code worldName}, null if there is no world
@@ -213,7 +219,7 @@ public class WorldUtil {
         if (!scrFile.exists()) {
             System.err.print("There is no file at: " + scrFile.getPath() + " So it can not be loaded into the server");
             return null;
-        } else if (!new File(scrFile, "level.dat").exists()) {
+        } else if (!isWorld(scrFile)) {
             System.err.print("The File at " + scrFile.getPath() + " is not a world file!");
             return null;
         }

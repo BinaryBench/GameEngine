@@ -11,7 +11,7 @@ import java.util.zip.ZipOutputStream;
 /**
  * Created by Exerosis.
  */
-public class FileUtilities {
+public class FileUtil {
 
     public static void createZip(File directory, File zipFile) throws IOException {
         createZip(mapDirectory(directory), zipFile);
