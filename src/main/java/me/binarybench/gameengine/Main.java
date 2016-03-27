@@ -15,11 +15,7 @@ public class Main extends JavaPlugin {
 
     public static void main(String[] args)
     {
-        String[] s = new String[]{"moo"};
-
-        s instanceof Iterable
-
-        System.out.println();
+        System.out.println(new String("t").hashCode());
     }
 
     public static void test()
