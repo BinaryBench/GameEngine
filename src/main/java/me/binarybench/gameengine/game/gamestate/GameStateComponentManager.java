@@ -15,15 +15,15 @@ import java.util.*;
  */
 public class GameStateComponentManager implements Listener {
 
-    private GameStateComponent gameStateComponent;
+    private GameStateManager gameStateManager;
 
     private GameComponent gameComponent;
 
     private Map<GameState, Set<Component>> components = new HashMap<>();
 
-    public GameStateComponentManager(GameComponent gameComponent, GameStateComponent gameStateComponent)
+    public GameStateComponentManager(GameComponent gameComponent, GameStateManager gameStateManager)
     {
-        this.gameStateComponent = gameStateComponent;
+        this.gameStateManager = gameStateManager;
         this.gameComponent = gameComponent;
 
         for (GameState gameState : GameState.values())
@@ -38,7 +38,7 @@ public class GameStateComponentManager implements Listener {
     @EventHandler
     public void onGameStateChange(GameStateChangeEvent event)
     {
-        if (event.getComponent() != this.gameStateComponent)
+        if (event.getComponent() != this.gameStateManager)
             return;
 
 

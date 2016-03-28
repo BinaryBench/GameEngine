@@ -13,13 +13,13 @@ import org.bukkit.event.Listener;
 /**
  * Created by BinaryBench on 3/20/2016.
  */
-public class GameStateComponent implements Listener {
+public class GameStateManager implements Listener {
 
     private GameState gameState;
 
     private GameComponent gameComponent;
 
-    public GameStateComponent(GameComponent gameComponent)
+    public GameStateManager(GameComponent gameComponent)
     {
         this.gameComponent = gameComponent;
         Main.registerEvents(this);

@@ -2,7 +2,7 @@ package me.binarybench.gameengine.game.countdown;
 
 import me.binarybench.gameengine.common.playerholder.PlayerHolder;
 import me.binarybench.gameengine.game.gamestate.GameState;
-import me.binarybench.gameengine.game.gamestate.GameStateComponent;
+import me.binarybench.gameengine.game.gamestate.GameStateManager;
 import me.binarybench.gameengine.component.countdown.CountdownBase;
 import org.bukkit.ChatColor;
 
@@ -13,15 +13,15 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public class GameStateCountdown extends CountdownBase {
 
-    private GameStateComponent gameStateComponent;
+    private GameStateManager gameStateManager;
     private GameState gameStateToSet;
 
     private PlayerHolder playerHolder;
 
-    public GameStateCountdown(ScheduledExecutorService scheduler, int startTime, GameStateComponent gameStateComponent, GameState gameStateToSet, PlayerHolder playerHolder)
+    public GameStateCountdown(ScheduledExecutorService scheduler, int startTime, GameStateManager gameStateManager, GameState gameStateToSet, PlayerHolder playerHolder)
     {
         super(scheduler, startTime);
-        this.gameStateComponent = gameStateComponent;
+        this.gameStateManager = gameStateManager;
         this.gameStateToSet = gameStateToSet;
         this.playerHolder = playerHolder;
     }
@@ -39,7 +39,7 @@ public class GameStateCountdown extends CountdownBase {
     @Override
     public void onFinish()
     {
-        this.getGameStateComponent().setGameState(this.getGameStateToSet());
+        this.getGameStateManager().setGameState(this.getGameStateToSet());
     }
 
     @Override
@@ -48,9 +48,9 @@ public class GameStateCountdown extends CountdownBase {
         getPlayerHolder().broadcast(ChatColor.GREEN + "GameStarting in " + ChatColor.RED + counter + ChatColor.GREEN + " second" + (counter > 0 ? "s" : "") + ".");
     }
 
-    public GameStateComponent getGameStateComponent()
+    public GameStateManager getGameStateManager()
     {
-        return gameStateComponent;
+        return gameStateManager;
     }
 
     public GameState getGameStateToSet()

@@ -15,7 +15,8 @@ public class Main extends JavaPlugin {
 
     public static void main(String[] args)
     {
-        System.out.println(new String("t").hashCode());
+        System.out.println(new Object().hashCode());
+        System.out.println(new Object().hashCode());
     }
 
     public static void test()

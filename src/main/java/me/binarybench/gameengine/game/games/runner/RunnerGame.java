@@ -4,7 +4,7 @@ import me.binarybench.gameengine.component.player.PlayerComponent;
 import me.binarybench.gameengine.game.Game;
 import me.binarybench.gameengine.game.GameComponent;
 import me.binarybench.gameengine.game.gamestate.GameState;
-import me.binarybench.gameengine.game.gamestate.GameStateComponent;
+import me.binarybench.gameengine.game.gamestate.GameStateManager;
 import me.binarybench.gameengine.game.gamestate.GameStateComponentManager;
 
 /**
@@ -23,10 +23,10 @@ public class RunnerGame implements Game {
     public void start(GameComponent gameComponent)
     {
 
-        GameStateComponent gameStateComponent = new GameStateComponent(gameComponent);
+        GameStateManager gameStateManager = new GameStateManager(gameComponent);
 
 
-        GameStateComponentManager gameStateComponentManager = new GameStateComponentManager(gameComponent, gameStateComponent);
+        GameStateComponentManager gameStateComponentManager = new GameStateComponentManager(gameComponent, gameStateManager);
 
 
 
