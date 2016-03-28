@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
  * Created by BinaryBench on 3/25/2016.
  */
 public class WorldUtil {
-    private WorldUtil() {
-    }
+    private WorldUtil()
+    {}
 
     /**
      * @param worldName The name of the world.
