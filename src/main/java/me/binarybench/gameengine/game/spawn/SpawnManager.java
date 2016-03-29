@@ -13,6 +13,11 @@ public interface SpawnManager {
 
     Location getSpawn(Player player);
 
+    default void respawn(Iterable<Player> players)
+    {
+        players.forEach(this::respawn);
+    }
+
     default Location respawn(Player player)
     {
         return respawn(new PlayerSpawnEvent(this, player, getSpawn(player)));
