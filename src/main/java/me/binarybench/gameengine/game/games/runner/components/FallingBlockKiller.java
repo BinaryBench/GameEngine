@@ -8,15 +8,18 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 
+import java.util.function.Supplier;
+
 /**
  * Created by BinaryBench on 3/24/2016.
  */
 public class FallingBlockKiller extends ComponentListener {
-    private World world;
 
-    public FallingBlockKiller(World world)
+    private Supplier<World> supplier;
+
+    public FallingBlockKiller(Supplier<World> supplier)
     {
-        this.world = world;
+        this.supplier = supplier;
     }
 
     @EventHandler
@@ -25,7 +28,7 @@ public class FallingBlockKiller extends ComponentListener {
         if (e.getEntityType().equals(EntityType.FALLING_BLOCK))
         {
 
-            if (!e.getBlock().getWorld().equals(world))
+            if (supplier.get() == null || e.getBlock().getWorld() != supplier.get())
                 return;
 
             if (e.getEntity() instanceof FallingBlock)

@@ -1,13 +1,16 @@
 package me.binarybench.gameengine.game.world;
 
 import me.binarybench.gameengine.Main;
+import me.binarybench.gameengine.common.utils.FileUtil;
 import me.binarybench.gameengine.common.utils.RandomUtil;
 import me.binarybench.gameengine.common.utils.ServerUtil;
 import me.binarybench.gameengine.common.utils.WorldUtil;
-import me.binarybench.gameengine.component.ComponentBase;
-import org.bukkit.Bukkit;
+import me.binarybench.gameengine.game.events.GameEndEvent;
+import me.binarybench.gameengine.game.events.GameStartEvent;
 import org.bukkit.World;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -18,7 +21,7 @@ import java.util.concurrent.ScheduledExecutorService;
 /**
  * Created by Bench on 3/27/2016.
  */
-public class SimpleWorldComponent extends ComponentBase implements WorldComponent {
+public class SimpleWorldManager implements WorldManager, Listener {
 
     private ScheduledExecutorService executorService;
 
@@ -27,7 +30,7 @@ public class SimpleWorldComponent extends ComponentBase implements WorldComponen
     private String name;
     private World world;
 
-    public SimpleWorldComponent(@Nonnull String name, @Nonnull ScheduledExecutorService executorService)
+    public SimpleWorldManager(@Nonnull String name, @Nonnull ScheduledExecutorService executorService)
     {
         this.executorService = executorService;
 
@@ -44,18 +47,9 @@ public class SimpleWorldComponent extends ComponentBase implements WorldComponen
             return;
         }
 
-        File gameWorldsFolder = null;
+        File gameWorldsFolder = FileUtil.newFileIgnoreCase(worldsFolders, name);
 
-        for (File subDir : worldsFolders.listFiles())
-        {
-            if (subDir.getName().equalsIgnoreCase(name))
-            {
-                gameWorldsFolder = subDir;
-                break;
-            }
-        }
-
-        if (gameWorldsFolder == null)
+        if (!gameWorldsFolder.exists())
         {
             ServerUtil.shutdown("No " + name + " world folders!");
             return;
@@ -86,23 +80,27 @@ public class SimpleWorldComponent extends ComponentBase implements WorldComponen
         saveFile = RandomUtil.randomElement(possibleWorlds);
 
         this.name = saveFile.getName() + this.id;
-
+        Main.registerEvents(this);
     }
 
 
-    @Override
-    public void onEnable()
+    @EventHandler(priority = EventPriority.LOW)
+    public void onStart(GameStartEvent event)
     {
         WorldUtil.deleteWorld(getName(), getExecutorService(), Main.getPlugin(), () -> {
             this.world = WorldUtil.createWorld(getSaveFile(), getName());
         });
     }
 
-    @Override
-    public void onDisable()
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onEnd(GameEndEvent event)
     {
         WorldUtil.deleteWorld(getWorld(), getExecutorService(), Main.getPlugin());
+        Main.unregisterEvents(this);
     }
+
+
+
 
     @Override
     public World getWorld()
@@ -119,6 +117,12 @@ public class SimpleWorldComponent extends ComponentBase implements WorldComponen
     public File getSaveFile()
     {
         return saveFile;
+    }
+
+    @Override
+    public File getConfigurationDirectory()
+    {
+        return getSaveFile();
     }
 
     public ScheduledExecutorService getExecutorService()

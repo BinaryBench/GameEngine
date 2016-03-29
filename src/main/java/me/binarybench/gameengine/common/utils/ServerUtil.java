@@ -24,4 +24,15 @@ public class ServerUtil {
 
         Bukkit.shutdown();
     }
+
+    public static void broadcast(String message, Iterable<Player> players)
+    {
+        for (Player player : players)
+            player.sendMessage(message);
+    }
+
+    public static void broadcast(String message)
+    {
+        Bukkit.broadcastMessage(message);
+    }
 }

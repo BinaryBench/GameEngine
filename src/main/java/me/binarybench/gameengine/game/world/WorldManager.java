@@ -5,11 +5,12 @@ import me.binarybench.gameengine.component.Component;
 import org.bukkit.World;
 
 import java.io.File;
+import java.util.function.Supplier;
 
 /**
  * Created by Bench on 3/27/2016.
  */
-public interface WorldComponent extends Component {
+public interface WorldManager extends Supplier<World> {
 
     /**
      *
@@ -23,10 +24,15 @@ public interface WorldComponent extends Component {
      */
     String getName();
 
-    default File getWorldFile()
+    /**
+     *
+     * @return The Directory where configurations are stored, null if it hasn't been loaded yet.
+     */
+    File getConfigurationDirectory();
+
+    @Override
+    default World get()
     {
-        if (getWorld() == null)
-            return null;
-        return getWorld().getWorldFolder();
+        return getWorld();
     }
 }
