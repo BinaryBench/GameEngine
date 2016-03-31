@@ -1,12 +1,12 @@
 package me.binarybench.gameengine.game.lobby;
 
+import me.binarybench.gameengine.Main;
 import me.binarybench.gameengine.common.playerholder.PlayerHolder;
 import me.binarybench.gameengine.common.playerholder.events.PlayerAddEvent;
 import me.binarybench.gameengine.common.utils.PlayerUtil;
 import me.binarybench.gameengine.common.utils.RandomUtil;
 import me.binarybench.gameengine.component.ListenerComponent;
-import me.binarybench.gameengine.component.player.PlayerComponent;
-import me.binarybench.gameengine.game.world.WorldManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -18,7 +18,10 @@ import java.util.function.Supplier;
 /**
  * Created by Bench on 3/31/2016.
  */
-public class LobbyComponent extends ListenerComponent {
+public class LobbyComponent extends ListenerComponent implements Runnable {
+
+
+    private int id;
 
     private PlayerHolder playerHolder;
 
@@ -34,12 +37,27 @@ public class LobbyComponent extends ListenerComponent {
     public void onEnable()
     {
         getPlayerHolder().forEach(this::spawnPlayer);
+        this.id = Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), this, 2, 2).getTaskId();
     }
 
     @Override
     public void onDisable()
     {
+        Bukkit.getScheduler().cancelTask(this.id);
+    }
 
+
+    @Override
+    public void run()
+    {
+        for (Player player : getPlayerHolder())
+        {
+            Location loc = player.getLocation();
+            if (loc.getBlockY() < 50)
+            {
+                spawnPlayer(player);
+            }
+        }
     }
 
     @EventHandler
@@ -62,18 +80,17 @@ public class LobbyComponent extends ListenerComponent {
 
     public Location getSpawn()
     {
-        Random r = RandomUtil.getRandom();
 
         double x = RandomUtil.randomDouble(-2, 2);
         double y = 60;
         double z = RandomUtil.randomDouble(-2, 2);
 
-        return new Location(getWorldSupplier().get(), x, y, z);
+        return new Location(getWorld(), x, y, z);
     }
 
-    public Supplier<World> getWorldSupplier()
+    public World getWorld()
     {
-        return worldSupplier;
+        return worldSupplier.get();
     }
 
     public PlayerHolder getPlayerHolder()
