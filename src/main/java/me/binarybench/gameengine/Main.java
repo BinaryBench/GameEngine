@@ -1,5 +1,6 @@
 package me.binarybench.gameengine;
 
+import me.binarybench.gameengine.common.utils.RandomUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -15,13 +16,7 @@ public class Main extends JavaPlugin {
 
     public static void main(String[] args)
     {
-        System.out.println(new Object().hashCode());
-        System.out.println(new Object().hashCode());
-    }
-
-    public static void test()
-    {
-        System.out.println("Oooo fancy!");
+        System.out.println(RandomUtil.randomDouble(-19, 30));
     }
 
     //Stuuuuuuffff

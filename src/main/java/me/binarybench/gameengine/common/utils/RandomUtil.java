@@ -20,6 +20,11 @@ public class RandomUtil {
         return random;
     }
 
+    public static double randomDouble(double min, double max)
+    {
+        return min + (getRandom().nextDouble() * Math.abs(max - min));
+    }
+
     public static <T> T randomElement(List<T> list)
     {
         return list.get(getRandom().nextInt(list.size()));

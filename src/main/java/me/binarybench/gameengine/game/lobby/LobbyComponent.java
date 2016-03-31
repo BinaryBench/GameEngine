@@ -1,127 +1,83 @@
 package me.binarybench.gameengine.game.lobby;
 
-import me.binarybench.gameengine.Main;
-import me.binarybench.gameengine.common.utils.FileUtil;
-import me.binarybench.gameengine.common.utils.ServerUtil;
-import me.binarybench.gameengine.common.utils.WorldUtil;
+import me.binarybench.gameengine.common.playerholder.PlayerHolder;
+import me.binarybench.gameengine.common.playerholder.events.PlayerAddEvent;
+import me.binarybench.gameengine.common.utils.PlayerUtil;
+import me.binarybench.gameengine.common.utils.RandomUtil;
 import me.binarybench.gameengine.component.ListenerComponent;
+import me.binarybench.gameengine.component.player.PlayerComponent;
 import me.binarybench.gameengine.game.world.WorldManager;
+import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
 
-import javax.annotation.Nonnull;
-import java.io.File;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.Random;
+import java.util.function.Supplier;
 
 /**
- * Created by Bench on 3/27/2016.
+ * Created by Bench on 3/31/2016.
  */
-public class LobbyComponent extends ListenerComponent implements WorldManager {
+public class LobbyComponent extends ListenerComponent {
 
-    public static final String LOBBY_WORLD_NAME = "LobbyWorld";
+    private PlayerHolder playerHolder;
 
-    private ScheduledExecutorService executorService;
+    private Supplier<World> worldSupplier;
 
-
-    private File saveFile;
-    // TODO make this arena specific
-    private String name = "LobbyWorld";
-    private World world;
-
-    public LobbyComponent(@Nonnull Object identifier, @Nonnull ScheduledExecutorService executorService)
+    public LobbyComponent(PlayerHolder playerHolder, Supplier<World> worldSupplier)
     {
-        this.executorService = executorService;
-        //Kinda ehh
-        this.name = LOBBY_WORLD_NAME + identifier.hashCode();
-
-
-
-        //Sever_Folder/plugins/GameEngine/
-        File worldsFolders = Main.getPlugin().getDataFolder();
-
-
-        if (!worldsFolders.isDirectory())
-        {
-            ServerUtil.shutdown("Could not find plugin folder!");
-            return;
-        }
-
-        saveFile = FileUtil.newFileIgnoreCase(worldsFolders, "Lobby", name);
-
-        if (!WorldUtil.isWorld(saveFile))
-        {
-            ServerUtil.shutdown("World: " + saveFile.getPath() + " is not a world!");
-        }
+        this.playerHolder = playerHolder;
+        this.worldSupplier = worldSupplier;
     }
-
 
     @Override
     public void onEnable()
     {
-        //WorldUtil.deleteWorld(getName(), getExecutorService(), Main.getPlugin(), () -> {
-            this.world = WorldUtil.createWorld(getSaveFile(), getName());
-        //});
-
-        // TODO TP players & jazz
-
+        getPlayerHolder().forEach(this::spawnPlayer);
     }
 
     @Override
     public void onDisable()
     {
-        //WorldUtil.deleteWorld(getWorld(), getExecutorService(), Main.getPlugin());
-    }
 
-
-    @EventHandler
-    public void onBlockBreak(BlockBreakEvent event)
-    {
-        if (event.getBlock().getWorld().equals(getWorld()))
-            event.setCancelled(true);
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event)
+    public void onJoin(PlayerAddEvent event)
     {
-        if (event.getBlock().getWorld().equals(getWorld()))
-            event.setCancelled(true);
+        if (event.getPlayerHolder() != getPlayerHolder())
+            return;
+
+        spawnPlayer(event.getPlayer());
     }
 
-    @EventHandler
-    private void onExplode(EntityExplodeEvent event)
+
+    public void spawnPlayer(Player player)
     {
-        if (event.getEntity().getWorld().equals(getWorld()))
-            event.setCancelled(true);
+        PlayerUtil.resetPlayer(player);
+
+        player.teleport(getSpawn());
     }
 
-    @Override
-    public World getWorld()
+
+    public Location getSpawn()
     {
-        return world;
+        Random r = RandomUtil.getRandom();
+
+        double x = RandomUtil.randomDouble(-2, 2);
+        double y = 60;
+        double z = RandomUtil.randomDouble(-2, 2);
+
+        return new Location(getWorldSupplier().get(), x, y, z);
     }
 
-    @Override
-    public String getName()
+    public Supplier<World> getWorldSupplier()
     {
-        return name;
+        return worldSupplier;
     }
 
-    public File getSaveFile()
+    public PlayerHolder getPlayerHolder()
     {
-        return saveFile;
-    }
-
-    @Override
-    public File getConfigurationDirectory()
-    {
-        return getSaveFile();
-    }
-
-    public ScheduledExecutorService getExecutorService()
-    {
-        return executorService;
+        return playerHolder;
     }
 }
