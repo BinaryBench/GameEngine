@@ -8,6 +8,10 @@ import org.bukkit.event.HandlerList;
 /**
  * Created by BinaryBench on 3/20/2016.
  */
+
+/**
+ * This event is called right before a Player is removed from a PlayerHolder
+ */
 public class PlayerRemoveEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
