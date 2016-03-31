@@ -1,12 +1,12 @@
 package me.binarybench.gameengine.game.spawn;
 
 import me.binarybench.gameengine.common.playerholder.PlayerHolder;
-import me.binarybench.gameengine.component.ComponentBase;
+import me.binarybench.gameengine.component.BaseComponent;
 
 /**
  * Created by Bench on 3/29/2016.
  */
-public class SpawnAtComponent extends ComponentBase {
+public class SpawnAtComponent extends BaseComponent {
 
     private SpawnManager spawnManager;
 

@@ -1,7 +1,7 @@
 package me.binarybench.gameengine.component.simple;
 
 import me.binarybench.gameengine.common.item.DefaultPredicate;
-import me.binarybench.gameengine.component.ComponentListener;
+import me.binarybench.gameengine.component.ListenerComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 /**
  * Created by BinaryBench on 3/24/2016.
  */
-public class NoDamage extends ComponentListener {
+public class NoDamage extends ListenerComponent {
 
     private Predicate<Player> playerPredicate;
 

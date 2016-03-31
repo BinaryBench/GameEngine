@@ -1,7 +1,7 @@
 package me.binarybench.gameengine.component.countdown;
 
 import me.binarybench.gameengine.common.scheduler.SyncRunnable;
-import me.binarybench.gameengine.component.ComponentBase;
+import me.binarybench.gameengine.component.BaseComponent;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by BinaryBench on 3/23/2016.
  */
-public abstract class CountdownBase extends ComponentBase implements SyncRunnable {
+public abstract class CountdownBase extends BaseComponent implements SyncRunnable {
 
     private final int startTime;
 

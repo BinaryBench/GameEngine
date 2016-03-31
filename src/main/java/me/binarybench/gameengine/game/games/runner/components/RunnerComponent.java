@@ -2,7 +2,7 @@ package me.binarybench.gameengine.game.games.runner.components;
 
 import me.binarybench.gameengine.common.playerholder.PlayerHolder;
 import me.binarybench.gameengine.common.scheduler.SyncRunnable;
-import me.binarybench.gameengine.component.ComponentBase;
+import me.binarybench.gameengine.component.BaseComponent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by BinaryBench on 3/24/2016.
  */
-public class RunnerComponent extends ComponentBase implements SyncRunnable {
+public class RunnerComponent extends BaseComponent implements SyncRunnable {
 
     //not static in case I want to have it per-map at some point in the future
     private MaterialData[] dropBlockDatas = new MaterialData[]{

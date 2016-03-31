@@ -4,7 +4,7 @@ import me.binarybench.gameengine.common.playerholder.PlayerHolder;
 import me.binarybench.gameengine.common.playerholder.events.PlayerAddEvent;
 import me.binarybench.gameengine.common.utils.FileUtil;
 import me.binarybench.gameengine.common.utils.ServerUtil;
-import me.binarybench.gameengine.component.ComponentListener;
+import me.binarybench.gameengine.component.ListenerComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Bench on 3/29/2016.
  */
-public class GameInfoComponent extends ComponentListener {
+public class GameInfoComponent extends ListenerComponent {
 
     private WorldManager worldManager;
     private PlayerHolder playerHolder;

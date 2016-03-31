@@ -2,7 +2,7 @@ package me.binarybench.gameengine.component.simple;
 
 import me.binarybench.gameengine.common.item.DefaultPredicate;
 import me.binarybench.gameengine.common.utils.BlockUtil;
-import me.binarybench.gameengine.component.ComponentListener;
+import me.binarybench.gameengine.component.ListenerComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 /**
  * Created by BinaryBench on 3/24/2016.
  */
-public class NoBlockBreak extends ComponentListener {
+public class NoBlockBreak extends ListenerComponent {
 
     private Predicate<Player> playerPredicate;
 

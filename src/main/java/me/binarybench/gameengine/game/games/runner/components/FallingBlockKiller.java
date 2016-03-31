@@ -1,6 +1,6 @@
 package me.binarybench.gameengine.game.games.runner.components;
 
-import me.binarybench.gameengine.component.ComponentListener;
+import me.binarybench.gameengine.component.ListenerComponent;
 import org.bukkit.Effect;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 /**
  * Created by BinaryBench on 3/24/2016.
  */
-public class FallingBlockKiller extends ComponentListener {
+public class FallingBlockKiller extends ListenerComponent {
 
     private Supplier<World> supplier;
 
