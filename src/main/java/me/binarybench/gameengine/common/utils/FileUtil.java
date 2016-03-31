@@ -4,10 +4,7 @@ import org.apache.commons.io.IOUtils;
 
 import javax.annotation.Nonnull;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -22,13 +19,20 @@ public class FileUtil {
 
 
 
-    public static File newFileIgnoreCase(@Nonnull File parent, @Nonnull String child)
+    public static File newFileIgnoreCase(@Nonnull File parent, @Nonnull String child, String... childnames)
     {
+        List<String> names = new ArrayList<>();
+        names.add(child);
+        names.addAll(Arrays.asList(childnames));
+
         if (!parent.isDirectory())
             return new File(parent, child);
+
         for (File file : parent.listFiles())
-            if (file.getName().equalsIgnoreCase(child))
-                return file;
+            for (String name : names)
+                if (file.getName().equalsIgnoreCase(name))
+                    return file;
+
         return new File(parent, child);
     }
 
