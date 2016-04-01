@@ -63,11 +63,11 @@ public class RunnerGame implements Game {
 
 
         //Full Game Component
-        fullGameComponentManager.addComponent(new GameInfoComponent(worldManager, getPlayerComponent(),
+        /*fullGameComponentManager.addComponent(new GameInfoComponent(worldManager, getPlayerComponent(),
                 ChatColor.YELLOW + "Game:" + ChatColor.WHITE + "Runner",
                 "",
                 "Run around and try not fall!"));
-
+        */
         fullGameComponentManager.addComponent(lobbyWorldComponent, EventPriority.LOWEST, EventPriority.HIGH);
 
 

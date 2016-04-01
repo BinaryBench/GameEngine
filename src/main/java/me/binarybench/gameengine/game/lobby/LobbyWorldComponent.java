@@ -66,6 +66,8 @@ public class LobbyWorldComponent extends ListenerComponent implements WorldManag
             this.world = WorldUtil.createWorld(getSaveFile(), getName());
         //});
 
+        System.err.println("Enabling!");
+
         // TODO TP players & jazz
     }
 
