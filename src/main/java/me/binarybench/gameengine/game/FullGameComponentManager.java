@@ -34,6 +34,7 @@ public class FullGameComponentManager implements Listener {
 
     public FullGameComponentManager(GameComponent gameComponent, Map<Component, Pair<EventPriority, EventPriority>> componentMap)
     {
+        this.gameComponent = gameComponent;
         components.putAll(componentMap);
         Main.registerEvents(this);
     }
