@@ -1,11 +1,15 @@
 package me.binarybench.gameengine.component.player;
 
 
+import me.binarybench.gameengine.Main;
 import me.binarybench.gameengine.component.player.events.PlayerComponentJoinEvent;
 import me.binarybench.gameengine.component.player.events.PlayerComponentQuitEvent;
 import me.binarybench.gameengine.component.player.events.PlayerComponentCanJoinEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,9 +17,20 @@ import java.util.Collection;
 /**
  * Created by BinaryBench on 3/17/2016.
  */
-public class SimplePlayerComponent implements PlayerComponent {
+public class SimplePlayerComponent implements PlayerComponent, Listener {
 
-    private ArrayList<Player> players;
+    private ArrayList<Player> players = new ArrayList<>();
+
+    public SimplePlayerComponent()
+    {
+        Main.registerEvents(this);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event)
+    {
+        removePlayer(event.getPlayer());
+    }
 
     //Players joining & leaving
     @Override
