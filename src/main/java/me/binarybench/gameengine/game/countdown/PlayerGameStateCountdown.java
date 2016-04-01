@@ -15,14 +15,13 @@ import java.util.concurrent.ScheduledExecutorService;
  * Created by Bench on 3/31/2016.
  */
 public class PlayerGameStateCountdown extends GameStateCountdown implements Listener {
-    private PlayerHolder playerHolder;
+
     private int startThreshold;
     private int stopThreshold;
 
-    public PlayerGameStateCountdown(ScheduledExecutorService scheduler, int startTime, GameStateManager gameStateManager, GameState gameStateToSet, PlayerHolder playerHolder, PlayerHolder playerHolder1, int startThreshold, int stopThreshold)
+    public PlayerGameStateCountdown(ScheduledExecutorService scheduler, int startTime, GameStateManager gameStateManager, GameState gameStateToSet, PlayerHolder playerHolder, int startThreshold, int stopThreshold)
     {
         super(scheduler, startTime, gameStateManager, gameStateToSet, playerHolder);
-        this.playerHolder = playerHolder1;
         this.startThreshold = startThreshold;
         this.stopThreshold = stopThreshold;
     }
@@ -77,11 +76,5 @@ public class PlayerGameStateCountdown extends GameStateCountdown implements List
     {
         Main.unregisterEvents(this);
         super.onDisable();
-    }
-
-    @Override
-    public PlayerHolder getPlayerHolder()
-    {
-        return playerHolder;
     }
 }

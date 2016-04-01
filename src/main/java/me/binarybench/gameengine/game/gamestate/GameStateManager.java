@@ -39,7 +39,8 @@ public class GameStateManager implements Listener {
     {
         if (event.getComponent() != this.gameComponent)
             return;
-        this.setGameState(GameState.RESTARTING);
+
+        privateSetGameState(GameState.RESTARTING);
         Main.unregisterEvents(this);
     }
 
@@ -49,8 +50,22 @@ public class GameStateManager implements Listener {
         return gameState;
     }
 
-    public void setGameState(GameState toGameState)
+    public boolean setGameState(GameState toGameState)
     {
+        if (toGameState == GameState.RESTARTING)
+        {
+            gameComponent.endGame();
+            return true;
+        }
+
+        return privateSetGameState(toGameState);
+    }
+
+    private boolean privateSetGameState(GameState toGameState)
+    {
+        if (toGameState == this.gameState)
+            return false;
+
         GameState fromGameState = getGameState();
 
         this.gameState = toGameState;
@@ -58,6 +73,6 @@ public class GameStateManager implements Listener {
         GameStateChangeEvent event = new GameStateChangeEvent(this, fromGameState, toGameState);
 
         Bukkit.getPluginManager().callEvent(event);
-
+        return true;
     }
 }

@@ -2,9 +2,11 @@ package me.binarybench.gameengine.game.victorycondition;
 
 import me.binarybench.gameengine.common.playerholder.PlayerHolder;
 import me.binarybench.gameengine.common.playerholder.events.PlayerAddEvent;
+import me.binarybench.gameengine.common.playerholder.events.PlayerRemoveEvent;
 import me.binarybench.gameengine.component.ListenerComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +41,14 @@ public class LMSVictoryCondition extends ListenerComponent {
         }
     }
 
+    @EventHandler
+    public void playerLeave(PlayerRemoveEvent event)
+    {
+        if (event.getPlayerHolder() != getPlayerHolder())
+            return;
+        checkEndGame(-1);
+    }
+
     public void sendWinners()
     {
         for (Player player : playerHolder)
@@ -58,8 +68,12 @@ public class LMSVictoryCondition extends ListenerComponent {
         }
         broadcast("");
         broadcast("----------");
+    }
 
-
+    @Override
+    public void onDisable()
+    {
+        sendWinners();
     }
 
     public void broadcast(String message)
