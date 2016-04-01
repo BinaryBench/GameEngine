@@ -81,9 +81,9 @@ public class LobbyComponent extends ListenerComponent implements Runnable {
     public Location getSpawn()
     {
 
-        double x = RandomUtil.randomDouble(-2, 2);
+        double x = RandomUtil.randomDouble(-1, 2);
         double y = 60;
-        double z = RandomUtil.randomDouble(-2, 2);
+        double z = RandomUtil.randomDouble(-1, 2);
 
         return new Location(getWorld(), x, y, z);
     }
