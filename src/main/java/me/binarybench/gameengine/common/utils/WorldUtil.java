@@ -33,7 +33,7 @@ public class WorldUtil {
 
     public static boolean isWorld(File file)
     {
-        return !new File(file, "level.dat").exists();
+        return new File(file, "level.dat").exists();
     }
 
 

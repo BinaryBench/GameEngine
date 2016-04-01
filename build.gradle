@@ -4,6 +4,9 @@ version '1.0.0'
 apply plugin: 'java'
 
 
+libsDirName = 'D:\\Servers\\Spigot-1.8.3\\plugins'
+
+
 repositories {
     mavenCentral()
 }
