@@ -1,4 +1,4 @@
-group 'me.exerosis.gameengine'
+group 'me.binarybench.gameengine'
 version '1.0.0'
 
 apply plugin: 'java'
