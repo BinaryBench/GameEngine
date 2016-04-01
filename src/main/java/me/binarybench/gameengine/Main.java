@@ -2,24 +2,49 @@ package me.binarybench.gameengine;
 
 import me.binarybench.gameengine.common.utils.RandomUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /*
  * Created by BinaryBench on 3/17/2016.
  */
-public class Main extends JavaPlugin {
+public class Main extends JavaPlugin implements Listener {
 
 
     private static Main plugin;
 
-    public static void main(String[] args)
+    private ScheduledExecutorService scheduledExecutorService;
+
+    private SimpleArena arena;
+
+    @Override
+    public void onEnable()
     {
-        System.out.println(RandomUtil.randomDouble(-19, 30));
+        plugin = this;
+        scheduledExecutorService = Executors.newScheduledThreadPool(10);
+        registerEvents(this);
+        getDataFolder().mkdirs();
+        this.arena = new SimpleArena(this.scheduledExecutorService);
     }
 
-    //Stuuuuuuffff
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event)
+    {
+        if (arena.getPlayerComponent().canJoin(event.getPlayer()))
+            arena.getPlayerComponent().addPlayer(event.getPlayer());
+    }
+
+
+
+
+
     public static Main getPlugin()
     {
         return plugin;
@@ -35,11 +60,7 @@ public class Main extends JavaPlugin {
         HandlerList.unregisterAll(listener);
     }
 
-    @Override
-    public void onEnable()
-    {
-        plugin = this;
-    }
+
 
 
 }
