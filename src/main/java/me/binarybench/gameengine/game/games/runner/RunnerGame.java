@@ -5,6 +5,7 @@ import me.binarybench.gameengine.component.player.PlayerComponent;
 import me.binarybench.gameengine.component.simple.*;
 import me.binarybench.gameengine.component.spectate.GameModeSpectateComponent;
 import me.binarybench.gameengine.component.spectate.SpectateComponent;
+import me.binarybench.gameengine.component.spectate.components.DeathSpectate;
 import me.binarybench.gameengine.game.FullGameComponentManager;
 import me.binarybench.gameengine.game.Game;
 import me.binarybench.gameengine.game.GameComponent;
@@ -17,6 +18,9 @@ import me.binarybench.gameengine.game.gamestate.GameStateManager;
 import me.binarybench.gameengine.game.gamestate.GameStateComponentManager;
 import me.binarybench.gameengine.game.lobby.LobbyComponent;
 import me.binarybench.gameengine.game.lobby.LobbyWorldComponent;
+import me.binarybench.gameengine.game.spawn.SimpleSpawnManager;
+import me.binarybench.gameengine.game.spawn.SpawnAtComponent;
+import me.binarybench.gameengine.game.spawn.SpawnManager;
 import me.binarybench.gameengine.game.victorycondition.LMSVictoryCondition;
 import me.binarybench.gameengine.game.world.GameInfoComponent;
 import me.binarybench.gameengine.game.world.SimpleWorldManager;
@@ -51,8 +55,10 @@ public class RunnerGame implements Game {
         GameStateManager gameStateManager = new GameStateManager(gameComponent);
 
         SimpleWorldManager worldManager = new SimpleWorldManager(NAME, getScheduledExecutorService());
+        SpawnManager spawnManager = new SimpleSpawnManager(worldManager);
 
-        SpectateComponent spectateComponent = new GameModeSpectateComponent(getPlayerComponent());
+
+        GameModeSpectateComponent spectateComponent = new GameModeSpectateComponent(getPlayerComponent());
 
 
 
@@ -63,12 +69,13 @@ public class RunnerGame implements Game {
 
 
         //Full Game Component
-        /*fullGameComponentManager.addComponent(new GameInfoComponent(worldManager, getPlayerComponent(),
-                ChatColor.YELLOW + "Game:" + ChatColor.WHITE + "Runner",
+        fullGameComponentManager.addComponent(new GameInfoComponent(worldManager, getPlayerComponent(),
+                ChatColor.YELLOW + "Game: " + ChatColor.WHITE + "Runner",
                 "",
                 "Run around and try not fall!"));
-        */
+
         fullGameComponentManager.addComponent(lobbyWorldComponent, EventPriority.LOWEST, EventPriority.HIGH);
+        fullGameComponentManager.addComponent(spectateComponent);
 
 
 
@@ -76,25 +83,40 @@ public class RunnerGame implements Game {
         //GameState Components
         GameStateComponentManager gameStateComponentManager = new GameStateComponentManager(gameComponent, gameStateManager);
 
-        List<Component> stopALLOFTHETHINGS = Arrays.asList(
-                new NoBlockBreak(playerComponent),
-                new NoBlockPlace(playerComponent),
-                new NoDamage(playerComponent),
-                new NoDropItem(playerComponent),
-                new NoPickUpItem(playerComponent));
+
+
+
+        //Stop Everything
+        gameStateComponentManager.addComponent(new NoBlockBreak(playerComponent), GameState.values());
+        gameStateComponentManager.addComponent(new NoBlockPlace(playerComponent), GameState.values());
+        gameStateComponentManager.addComponent(new NoDropItem(playerComponent), GameState.values());
+        gameStateComponentManager.addComponent(new NoPickUpItem(playerComponent), GameState.values());
+
+
+
+        gameStateComponentManager.addComponent(new NoDamage(playerComponent), GameState.LOBBY, GameState.PRE_GAME, GameState.POST_GAME);
+
+        gameStateComponentManager.addComponent(new NoPvP(playerComponent), GameState.IN_GAME);
+
+        gameStateComponentManager.addComponent(new VoidKiller(spectateComponent.getNonSpectateHolder(), worldManager), GameState.PRE_GAME, GameState.IN_GAME);
+        gameStateComponentManager.addComponent(new SpawnAtComponent(spawnManager, playerComponent), GameState.PRE_GAME);
+
+        gameStateComponentManager.addComponent(new DeathSpectate(spectateComponent), GameState.PRE_GAME, GameState.IN_GAME, GameState.POST_GAME);
+
+
+
 
         //Lobby Component
         gameStateComponentManager.addComponent(new LobbyComponent(playerComponent, lobbyWorldComponent), GameState.LOBBY);
 
-        //Stop Everything
-        gameStateComponentManager.addComponents(Arrays.asList(GameState.LOBBY, GameState.PRE_GAME, GameState.IN_GAME, GameState.POST_GAME), stopALLOFTHETHINGS);
+
 
         //Game Specific
         gameStateComponentManager.addComponent(new RunnerComponent(spectateComponent.getNonSpectateHolder(), getScheduledExecutorService()), GameState.IN_GAME);
         gameStateComponentManager.addComponent(new FallingBlockKiller(worldManager), GameState.IN_GAME, GameState.POST_GAME);
 
         //Countdowns
-        gameStateComponentManager.addComponent(new PlayerGameStateCountdown(getScheduledExecutorService(), 10, gameStateManager, GameState.PRE_GAME, playerComponent, 1, 1), GameState.LOBBY);
+        gameStateComponentManager.addComponent(new PlayerGameStateCountdown(getScheduledExecutorService(), 20, gameStateManager, GameState.PRE_GAME, playerComponent, 1, 1), GameState.LOBBY);
         gameStateComponentManager.addComponent(new GameStateCountdown(getScheduledExecutorService(), 10, gameStateManager, GameState.IN_GAME, playerComponent), GameState.PRE_GAME);
 
         gameStateComponentManager.addComponent(new GameStateCountdown(getScheduledExecutorService(), 10, gameStateManager, GameState.RESTARTING, playerComponent), GameState.POST_GAME);

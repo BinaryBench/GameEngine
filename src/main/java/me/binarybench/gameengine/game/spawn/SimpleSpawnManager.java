@@ -29,6 +29,7 @@ public class SimpleSpawnManager implements SpawnManager {
     public SimpleSpawnManager(WorldManager worldManager)
     {
         this.worldManager = worldManager;
+        loadLocations(worldManager);
     }
 
 
@@ -43,9 +44,13 @@ public class SimpleSpawnManager implements SpawnManager {
 
         YamlConfiguration mapdata = YamlConfiguration.loadConfiguration(file);
 
-        for (String stringLocation : mapdata.getStringList("spawnpoints"))
+        System.err.println("Starting to load locations");
+
+        for (String stringLocation : mapdata.getStringList("SpawnPoints"))
         {
+            System.err.println(stringLocation);
             Location l = LocationUtil.toWorldlessLocation(stringLocation);
+
             if (l != null)
                 locations.add(l);
         }
@@ -62,6 +67,10 @@ public class SimpleSpawnManager implements SpawnManager {
     {
         if (locations == null)
             ServerUtil.shutdown("No locations, (probably because the world wasn't loaded.)");
+
+        System.err.println("Locations size: " + locations.size());
+        System.err.println("Counter: " + counter);
+
         Location loc = locations.get(counter);
         counter++;
         if (counter == locations.size())

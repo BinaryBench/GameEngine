@@ -4,6 +4,7 @@ package me.binarybench.gameengine.game.countdown;
 import me.binarybench.gameengine.Main;
 import me.binarybench.gameengine.common.playerholder.PlayerHolder;
 import me.binarybench.gameengine.common.playerholder.events.PlayerAddEvent;
+import me.binarybench.gameengine.common.playerholder.events.PlayerRemoveEvent;
 import me.binarybench.gameengine.game.gamestate.GameState;
 import me.binarybench.gameengine.game.gamestate.GameStateManager;
 import org.bukkit.event.EventHandler;
@@ -35,16 +36,22 @@ public class PlayerGameStateCountdown extends GameStateCountdown implements List
     {
         int playerCount = getPlayerHolder().getPlayers().size() + offset;
 
+        System.err.println("PlayerCount: " + playerCount);
+
         if (playerCount >= this.startThreshold)
         {
+            System.err.println("above!");
             if (!isRunning())
                 restart();
         }
         else if (playerCount < this.stopThreshold)
         {
+            System.err.println("below!");
             if (isRunning())
                 stop();
         }
+        else
+            System.err.println("inbetween!");
 
     }
 
@@ -57,7 +64,7 @@ public class PlayerGameStateCountdown extends GameStateCountdown implements List
     }
 
     @EventHandler
-    public void playerRemove(PlayerAddEvent event)
+    public void playerRemove(PlayerRemoveEvent event)
     {
         if (event.getPlayerHolder() != getPlayerHolder())
             return;

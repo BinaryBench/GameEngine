@@ -1,5 +1,6 @@
 package me.binarybench.gameengine.common.utils;
 
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
@@ -117,6 +118,20 @@ public class PlayerUtil {
 
     /**
      *
+     * Resets the {@code Player}'s fall distance to 0.
+     *
+     * @param player The player
+     */
+    public static void resetFallDistance(Player player)
+    {
+        if (!hasPlayer(player))
+            return;
+
+        player.setFallDistance(0);
+    }
+
+    /**
+     *
      * Checks to see if there is a {@code Player} online who has the UUID
      * {@code playersUUID}
      *
@@ -125,4 +140,14 @@ public class PlayerUtil {
     public static boolean hasPlayer(Player player)
     {
         return player.isOnline();
-    }}
+    }
+
+    public static void killPlayer(Player player)
+    {
+        if (!hasPlayer(player))
+            return;
+
+        player.damage(player.getHealth());
+    }
+
+}

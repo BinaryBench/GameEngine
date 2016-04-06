@@ -34,14 +34,14 @@ public abstract class CountdownBase extends BaseComponent implements SyncRunnabl
 
     public boolean start()
     {
-        if (isRunning() || counter <= 0)
+        if (isRunning())
             return false;
         futureTask = scheduler.scheduleAtFixedRate(this, 1, 1, TimeUnit.SECONDS);
         this.onStart();
         return true;
     }
 
-    public abstract void onStart();
+
 
     public boolean stop()
     {
@@ -58,6 +58,7 @@ public abstract class CountdownBase extends BaseComponent implements SyncRunnabl
         return (futureTask != null);
     }
 
+    public abstract void onStart();
     public abstract void onStop();
 
     @Override

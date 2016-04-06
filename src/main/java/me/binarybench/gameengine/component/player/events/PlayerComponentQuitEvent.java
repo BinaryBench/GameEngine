@@ -17,20 +17,4 @@ public class PlayerComponentQuitEvent extends PlayerRemoveEvent {
         super(playerComponent, player);
     }
 
-    public static HandlerList getHandlerList()
-    {
-        return handlers;
-    }
-
-    @Override
-    public HandlerList getHandlers()
-    {
-        return handlers;
-    }
-
-    @Override
-    public PlayerComponent getPlayerHolder()
-    {
-        return (PlayerComponent) super.getPlayerHolder();
-    }
 }

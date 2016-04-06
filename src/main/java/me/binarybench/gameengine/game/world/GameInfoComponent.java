@@ -49,25 +49,24 @@ public class GameInfoComponent extends ListenerComponent {
     {
         StringBuilder sb = new StringBuilder();
         sb.append(ChatColor.GREEN);
-        sb.append("===== ===== ===== ===== ===== =====");
+        sb.append("===== ===== ===== ===== ===== =====\n");
 
-        if (gameInfo != null && gameInfo.isEmpty())
+        if (gameInfo != null && !gameInfo.isEmpty())
         {
             sb.append(ChatColor.RESET);
             sb.append(gameInfo);
-
         }
 
-        if (mapInfo != null && mapInfo.isEmpty())
+        if (mapInfo != null && !mapInfo.isEmpty())
         {
-            sb.append("\n");
+            sb.append(" \n");
             sb.append(ChatColor.RESET);
             sb.append(mapInfo);
 
         }
 
         sb.append(ChatColor.GREEN);
-        sb.append("===== ===== ===== ===== ===== =====");
+        sb.append("\n===== ===== ===== ===== ===== =====");
 
         return sb.toString();
     }
@@ -82,8 +81,8 @@ public class GameInfoComponent extends ListenerComponent {
         for (String line : list)
         {
             sb.append(ChatColor.RESET);
-            sb.append(line);
-            sb.append("/n");
+            sb.append((line.equals("") ? " " : line));
+            sb.append(" \n");
         }
 
         if (sb.length() == 0)

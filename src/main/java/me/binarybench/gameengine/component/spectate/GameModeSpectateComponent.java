@@ -1,6 +1,9 @@
 package me.binarybench.gameengine.component.spectate;
 
 import me.binarybench.gameengine.common.playerholder.PlayerHolder;
+import me.binarybench.gameengine.common.utils.PlayerUtil;
+import me.binarybench.gameengine.component.ListenerComponent;
+import me.binarybench.gameengine.component.player.events.PlayerComponentQuitEvent;
 import me.binarybench.gameengine.component.spectate.events.DisableSpectateEvent;
 import me.binarybench.gameengine.component.spectate.events.EnableSpectateEvent;
 import me.binarybench.gameengine.component.player.PlayerComponent;
@@ -9,6 +12,7 @@ import me.binarybench.gameengine.common.playerholder.events.PlayerRemoveEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
@@ -18,7 +22,7 @@ import java.util.List;
 /**
  * Created by BinaryBench on 3/20/2016.
  */
-public class GameModeSpectateComponent implements SpectateComponent {
+public class GameModeSpectateComponent extends ListenerComponent implements SpectateComponent {
 
     private PlayerComponent playerComponent;
 
@@ -48,11 +52,8 @@ public class GameModeSpectateComponent implements SpectateComponent {
         Bukkit.getPluginManager().callEvent(removeEvent);
         Bukkit.getPluginManager().callEvent(addEvent);
 
-        player.getInventory().clear();
-        for (PotionEffect effect : player.getActivePotionEffects())
-            player.removePotionEffect(effect.getType());
-        player.setFallDistance(0);
-        player.resetMaxHealth();
+
+        PlayerUtil.resetPlayer(player);
         player.setGameMode(GameMode.SPECTATOR);
 
         this.spectaters.add(player);
@@ -77,6 +78,12 @@ public class GameModeSpectateComponent implements SpectateComponent {
         return true;
     }
 
+    @EventHandler
+    public void onLeave(PlayerComponentQuitEvent event)
+    {
+        if (isSpectating(event.getPlayer()))
+            this.disableSpectate(event.getPlayer());
+    }
 
     @Override
     public PlayerHolder getSpectateHolder()

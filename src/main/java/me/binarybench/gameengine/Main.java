@@ -1,5 +1,6 @@
 package me.binarybench.gameengine;
 
+import me.binarybench.gameengine.common.utils.LocationUtil;
 import me.binarybench.gameengine.common.utils.RandomUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -16,6 +17,11 @@ import java.util.concurrent.ScheduledExecutorService;
  * Created by BinaryBench on 3/17/2016.
  */
 public class Main extends JavaPlugin implements Listener {
+
+    public static void main(String[] args)
+    {
+        System.out.println(LocationUtil.toWorldlessLocation("0.5,57,-4.5"));
+    }
 
 
     private static Main plugin;

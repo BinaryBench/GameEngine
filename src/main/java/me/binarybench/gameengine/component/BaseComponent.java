@@ -1,7 +1,7 @@
 package me.binarybench.gameengine.component;
 
 /**
- * Created by Exerosis.
+ * Created by BinaryBench.
  */
 public abstract class BaseComponent implements Component {
     private boolean enabled = false;
