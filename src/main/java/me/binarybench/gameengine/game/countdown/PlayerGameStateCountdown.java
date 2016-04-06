@@ -36,22 +36,17 @@ public class PlayerGameStateCountdown extends GameStateCountdown implements List
     {
         int playerCount = getPlayerHolder().getPlayers().size() + offset;
 
-        System.err.println("PlayerCount: " + playerCount);
 
         if (playerCount >= this.startThreshold)
         {
-            System.err.println("above!");
             if (!isRunning())
                 restart();
         }
         else if (playerCount < this.stopThreshold)
         {
-            System.err.println("below!");
             if (isRunning())
                 stop();
         }
-        else
-            System.err.println("inbetween!");
 
     }
 
