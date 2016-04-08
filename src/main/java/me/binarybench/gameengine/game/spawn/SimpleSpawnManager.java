@@ -2,11 +2,8 @@ package me.binarybench.gameengine.game.spawn;
 
 import me.binarybench.gameengine.common.utils.FileUtil;
 import me.binarybench.gameengine.common.utils.LocationUtil;
-import me.binarybench.gameengine.common.utils.PlayerUtil;
 import me.binarybench.gameengine.common.utils.ServerUtil;
-import me.binarybench.gameengine.game.spawn.event.PlayerSpawnEvent;
-import me.binarybench.gameengine.game.world.WorldManager;
-import org.bukkit.Bukkit;
+import me.binarybench.gameengine.component.world.WorldManager;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;

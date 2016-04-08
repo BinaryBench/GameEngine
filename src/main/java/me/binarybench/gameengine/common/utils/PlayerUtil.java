@@ -29,7 +29,7 @@ public class PlayerUtil {
 
         clearInv(player);
         clearPotionEffects(player);
-        resetMaxHealth(player);
+        resetHealth(player);
         resetMaxHunger(player);
         resetWalkSpeed(player);
         player.setFallDistance(0);
@@ -43,12 +43,12 @@ public class PlayerUtil {
      *
      * @param player The player
      */
-    public static void resetMaxHealth(Player player)
+    public static void resetHealth(Player player)
     {
         if (!hasPlayer(player))
             return;
 
-        player.resetMaxHealth();
+        player.setHealth(player.getMaxHealth());
     }
 
     /**

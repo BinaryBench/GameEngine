@@ -1,7 +1,5 @@
-package me.binarybench.gameengine.game.world;
+package me.binarybench.gameengine.component.world;
 
-import me.binarybench.gameengine.common.utils.WorldUtil;
-import me.binarybench.gameengine.component.Component;
 import org.bukkit.World;
 
 import java.io.File;

@@ -1,4 +1,4 @@
-package me.binarybench.gameengine.game.world;
+package me.binarybench.gameengine.component.world;
 
 import me.binarybench.gameengine.common.playerholder.PlayerHolder;
 import me.binarybench.gameengine.common.playerholder.events.PlayerAddEvent;

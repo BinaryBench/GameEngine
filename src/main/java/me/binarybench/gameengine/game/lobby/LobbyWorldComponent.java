@@ -1,13 +1,10 @@
 package me.binarybench.gameengine.game.lobby;
 
 import me.binarybench.gameengine.Main;
-import me.binarybench.gameengine.common.playerholder.PlayerHolder;
 import me.binarybench.gameengine.common.utils.*;
 import me.binarybench.gameengine.component.ListenerComponent;
-import me.binarybench.gameengine.game.world.WorldManager;
-import org.bukkit.Location;
+import me.binarybench.gameengine.component.world.WorldManager;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -15,7 +12,6 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 
 import javax.annotation.Nonnull;
 import java.io.File;
-import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**

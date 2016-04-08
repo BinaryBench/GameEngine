@@ -1,4 +1,4 @@
-package me.binarybench.gameengine.game.world;
+package me.binarybench.gameengine.component.world;
 
 import me.binarybench.gameengine.Main;
 import me.binarybench.gameengine.common.utils.FileUtil;

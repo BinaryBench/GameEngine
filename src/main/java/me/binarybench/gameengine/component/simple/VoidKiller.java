@@ -6,7 +6,7 @@ import me.binarybench.gameengine.common.utils.FileUtil;
 import me.binarybench.gameengine.common.utils.PlayerUtil;
 import me.binarybench.gameengine.common.utils.ServerUtil;
 import me.binarybench.gameengine.component.BaseComponent;
-import me.binarybench.gameengine.game.world.WorldManager;
+import me.binarybench.gameengine.component.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -49,6 +49,8 @@ public class VoidKiller extends BaseComponent implements Runnable {
 
         this.height = mapdata.getInt("VoidLevel", DEFAULT_HEIGHT);
 
+        System.err.println("height: " + this.height);
+
     }
 
 
@@ -76,6 +78,7 @@ public class VoidKiller extends BaseComponent implements Runnable {
             Location loc = player.getLocation();
             if (loc.getBlockY() < this.height)
             {
+                System.err.println("Killing player!");
                 PlayerUtil.killPlayer(player);
             }
         }

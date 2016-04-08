@@ -5,9 +5,18 @@ package me.binarybench.gameengine.game;
  */
 public class SingleGameComponent extends BaseGameComponent {
 
+    private Game game;
+
     public SingleGameComponent(Game game)
     {
+        this.game = game;
         startGame(game);
     }
 
+    @Override
+    public void endGame()
+    {
+        super.endGame();
+        startGame(game);
+    }
 }

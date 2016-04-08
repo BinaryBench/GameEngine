@@ -1,10 +1,8 @@
 package me.binarybench.gameengine.game.games.runner;
 
-import me.binarybench.gameengine.component.Component;
 import me.binarybench.gameengine.component.player.PlayerComponent;
 import me.binarybench.gameengine.component.simple.*;
 import me.binarybench.gameengine.component.spectate.GameModeSpectateComponent;
-import me.binarybench.gameengine.component.spectate.SpectateComponent;
 import me.binarybench.gameengine.component.spectate.components.DeathSpectate;
 import me.binarybench.gameengine.game.FullGameComponentManager;
 import me.binarybench.gameengine.game.Game;
@@ -22,13 +20,11 @@ import me.binarybench.gameengine.game.spawn.SimpleSpawnManager;
 import me.binarybench.gameengine.game.spawn.SpawnAtComponent;
 import me.binarybench.gameengine.game.spawn.SpawnManager;
 import me.binarybench.gameengine.game.victorycondition.LMSVictoryCondition;
-import me.binarybench.gameengine.game.world.GameInfoComponent;
-import me.binarybench.gameengine.game.world.SimpleWorldManager;
+import me.binarybench.gameengine.component.world.GameInfoComponent;
+import me.binarybench.gameengine.component.world.SimpleWorldManager;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.event.EventPriority;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
@@ -57,16 +53,11 @@ public class RunnerGame implements Game {
         SimpleWorldManager worldManager = new SimpleWorldManager(NAME, getScheduledExecutorService());
         SpawnManager spawnManager = new SimpleSpawnManager(worldManager);
 
-
         GameModeSpectateComponent spectateComponent = new GameModeSpectateComponent(getPlayerComponent());
-
-
 
         LobbyWorldComponent lobbyWorldComponent = new LobbyWorldComponent(gameComponent, getScheduledExecutorService());
 
-
         FullGameComponentManager fullGameComponentManager = new FullGameComponentManager(gameComponent);
-
 
         //Full Game Component
         fullGameComponentManager.addComponent(new GameInfoComponent(worldManager, getPlayerComponent(),
@@ -93,9 +84,7 @@ public class RunnerGame implements Game {
         gameStateComponentManager.addComponent(new NoPickUpItem(playerComponent), GameState.values());
 
 
-
         gameStateComponentManager.addComponent(new NoDamage(playerComponent), GameState.LOBBY, GameState.PRE_GAME, GameState.POST_GAME);
-
         gameStateComponentManager.addComponent(new NoPvP(playerComponent), GameState.IN_GAME);
 
         gameStateComponentManager.addComponent(new VoidKiller(spectateComponent.getNonSpectateHolder(), worldManager), GameState.PRE_GAME, GameState.IN_GAME);
