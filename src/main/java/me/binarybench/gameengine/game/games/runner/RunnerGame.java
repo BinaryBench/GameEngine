@@ -4,6 +4,7 @@ import me.binarybench.gameengine.component.player.PlayerComponent;
 import me.binarybench.gameengine.component.simple.*;
 import me.binarybench.gameengine.component.spectate.GameModeSpectateComponent;
 import me.binarybench.gameengine.component.spectate.components.DeathSpectate;
+import me.binarybench.gameengine.component.spectate.components.SpectateInWorld;
 import me.binarybench.gameengine.game.FullGameComponentManager;
 import me.binarybench.gameengine.game.Game;
 import me.binarybench.gameengine.game.GameComponent;
@@ -21,8 +22,9 @@ import me.binarybench.gameengine.game.spawn.SpawnAtComponent;
 import me.binarybench.gameengine.game.spawn.SpawnManager;
 import me.binarybench.gameengine.game.victorycondition.LMSVictoryCondition;
 import me.binarybench.gameengine.component.world.GameInfoComponent;
-import me.binarybench.gameengine.component.world.SimpleWorldManager;
+import me.binarybench.gameengine.component.world.SimpleWorldComponent;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.craftbukkit.libs.jline.console.completer.ArgumentCompleter;
 import org.bukkit.event.EventPriority;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -50,7 +52,7 @@ public class RunnerGame implements Game {
 
         GameStateManager gameStateManager = new GameStateManager(gameComponent);
 
-        SimpleWorldManager worldManager = new SimpleWorldManager(NAME, getScheduledExecutorService());
+        SimpleWorldComponent worldManager = new SimpleWorldComponent(NAME, getScheduledExecutorService());
         SpawnManager spawnManager = new SimpleSpawnManager(worldManager);
 
         GameModeSpectateComponent spectateComponent = new GameModeSpectateComponent(getPlayerComponent());
@@ -65,10 +67,12 @@ public class RunnerGame implements Game {
                 "",
                 "Run around and try not fall!"));
 
+        fullGameComponentManager.addComponent(worldManager, EventPriority.LOW, EventPriority.HIGHEST);
+        fullGameComponentManager.addComponent(new WeatherComponent(worldManager));
         fullGameComponentManager.addComponent(lobbyWorldComponent, EventPriority.LOWEST, EventPriority.HIGH);
         fullGameComponentManager.addComponent(spectateComponent);
 
-
+        fullGameComponentManager.addComponent(new SpectateInWorld(spectateComponent, worldManager));
 
 
         //GameState Components

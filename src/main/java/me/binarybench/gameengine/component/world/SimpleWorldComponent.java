@@ -5,6 +5,7 @@ import me.binarybench.gameengine.common.utils.FileUtil;
 import me.binarybench.gameengine.common.utils.RandomUtil;
 import me.binarybench.gameengine.common.utils.ServerUtil;
 import me.binarybench.gameengine.common.utils.WorldUtil;
+import me.binarybench.gameengine.component.ListenerComponent;
 import me.binarybench.gameengine.game.events.GameEndEvent;
 import me.binarybench.gameengine.game.events.GameStartEvent;
 import org.bukkit.World;
@@ -21,7 +22,7 @@ import java.util.concurrent.ScheduledExecutorService;
 /**
  * Created by Bench on 3/27/2016.
  */
-public class SimpleWorldManager implements WorldManager, Listener {
+public class SimpleWorldComponent extends ListenerComponent implements WorldManager {
 
     private ScheduledExecutorService executorService;
 
@@ -30,7 +31,7 @@ public class SimpleWorldManager implements WorldManager, Listener {
     private String name;
     private World world;
 
-    public SimpleWorldManager(@Nonnull String name, @Nonnull ScheduledExecutorService executorService)
+    public SimpleWorldComponent(@Nonnull String name, @Nonnull ScheduledExecutorService executorService)
     {
         this.executorService = executorService;
 
@@ -80,25 +81,22 @@ public class SimpleWorldManager implements WorldManager, Listener {
         saveFile = RandomUtil.randomElement(possibleWorlds);
 
         this.name = saveFile.getName() + this.id;
-        Main.registerEvents(this);
+
     }
 
-
-    @EventHandler(priority = EventPriority.LOW)
-    public void onStart(GameStartEvent event)
+    @Override
+    public void onEnable()
     {
         WorldUtil.deleteWorld(getName(), getExecutorService(), Main.getPlugin(), () -> {
             this.world = WorldUtil.createWorld(getSaveFile(), getName());
         });
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onEnd(GameEndEvent event)
+    @Override
+    public void onDisable()
     {
         WorldUtil.deleteWorld(getWorld(), getExecutorService(), Main.getPlugin());
-        Main.unregisterEvents(this);
     }
-
 
 
 
