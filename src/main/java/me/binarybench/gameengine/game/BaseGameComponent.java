@@ -15,7 +15,6 @@ public abstract class BaseGameComponent implements GameComponent {
     @Override
     public void endGame()
     {
-        //TODO better
         System.out.println("Game Ended");
         Bukkit.getServer().getPluginManager().callEvent(new GameEndEvent(this));
         this.game = null;
