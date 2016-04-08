@@ -40,7 +40,6 @@ public class WeatherComponent extends ListenerComponent {
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event)
     {
-        System.err.println("onWorldLoad! event: " + event.getWorld() + " Manager: " + getWorldManager().getName());
         if (!event.getWorld().getName().equals(getWorldManager().getName()))
             return;
         setWeather(event.getWorld());
@@ -49,7 +48,6 @@ public class WeatherComponent extends ListenerComponent {
     @EventHandler
     public void onWeather(WeatherChangeEvent event)
     {
-
         if (!event.getWorld().equals(getWorldManager().getWorld()))
             return;
         if (event.toWeatherState() != hasStorm)
@@ -58,7 +56,6 @@ public class WeatherComponent extends ListenerComponent {
 
     private void setWeather(World world)
     {
-        System.err.println("setWeather called!");
         if (world == null)
             return;
 
@@ -67,16 +64,13 @@ public class WeatherComponent extends ListenerComponent {
         if (!file.exists())
         {
             hasStorm = defaultHasStorm;
-            System.err.println("No file");
         }
         else
         {
-            System.err.println("Yes file");
             YamlConfiguration mapdata = YamlConfiguration.loadConfiguration(file);
             hasStorm = mapdata.getBoolean("Storm", defaultHasStorm);
         }
 
-        System.err.println("hasStorm: " + hasStorm);
 
         world.setStorm(hasStorm);
         world.setThundering(hasStorm);

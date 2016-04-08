@@ -49,8 +49,6 @@ public class VoidKiller extends BaseComponent implements Runnable {
 
         this.height = mapdata.getInt("VoidLevel", DEFAULT_HEIGHT);
 
-        System.err.println("height: " + this.height);
-
     }
 
 
