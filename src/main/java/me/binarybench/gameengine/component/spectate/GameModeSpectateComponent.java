@@ -2,8 +2,13 @@ package me.binarybench.gameengine.component.spectate;
 
 import me.binarybench.gameengine.common.playerholder.PlayerHolder;
 import me.binarybench.gameengine.common.utils.PlayerUtil;
+import me.binarybench.gameengine.component.Component;
 import me.binarybench.gameengine.component.ListenerComponent;
 import me.binarybench.gameengine.component.player.events.PlayerComponentQuitEvent;
+import me.binarybench.gameengine.component.simple.NoBlockBreak;
+import me.binarybench.gameengine.component.simple.NoBlockPlace;
+import me.binarybench.gameengine.component.simple.NoDamage;
+import me.binarybench.gameengine.component.simple.NoDropItem;
 import me.binarybench.gameengine.component.spectate.events.DisableSpectateEvent;
 import me.binarybench.gameengine.component.spectate.events.EnableSpectateEvent;
 import me.binarybench.gameengine.component.player.PlayerComponent;
@@ -16,29 +21,48 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 /**
  * Created by BinaryBench on 3/20/2016.
  */
-public class GameModeSpectateComponent extends ListenerComponent implements SpectateComponent {
+public class GameModeSpectateComponent extends ListenerComponent implements SpectateComponent, PlayerHolder {
+
+    private List<Component> subComponents;
 
     private PlayerComponent playerComponent;
 
-    private List<Player> spectaters = new ArrayList<Player>();
-
-    private SpectateHolder spectateHolder;
+    private List<Player> spectaters = new ArrayList<>();
 
     private NonSpectateHolder nonSpectateHolder;
 
     public GameModeSpectateComponent(PlayerComponent playerComponent)
     {
         this.playerComponent = playerComponent;
-        this.spectateHolder = new SpectateHolder();
         this.nonSpectateHolder = new NonSpectateHolder();
+
+        this.subComponents = Arrays.asList(
+            new NoDamage(this),
+            new NoDropItem(this),
+            new NoBlockPlace(this),
+            new NoBlockBreak(this)
+        );
+
     }
 
+    @Override
+    public void onEnable()
+    {
+        subComponents.forEach(Component::enable);
+    }
+
+    @Override
+    public void onDisable()
+    {
+        subComponents.forEach(Component::disable);
+    }
 
     @Override
     public boolean enableSpectate(Player player)
@@ -88,7 +112,7 @@ public class GameModeSpectateComponent extends ListenerComponent implements Spec
     @Override
     public PlayerHolder getSpectateHolder()
     {
-        return this.spectateHolder;
+        return this;
     }
 
     @Override
@@ -97,13 +121,10 @@ public class GameModeSpectateComponent extends ListenerComponent implements Spec
         return this.nonSpectateHolder;
     }
 
-
-    class SpectateHolder implements PlayerHolder {
-        @Override
-        public Collection<Player> getPlayers()
-        {
-            return spectaters;
-        }
+    @Override
+    public Collection<Player> getPlayers()
+    {
+        return this.spectaters;
     }
 
     class NonSpectateHolder implements PlayerHolder {
