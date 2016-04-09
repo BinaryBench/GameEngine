@@ -27,10 +27,7 @@ public interface SpawnManager {
     {
         Player player = event.getPlayer();
 
-        PlayerUtil.resetPlayer(event.getPlayer());
-
         player.teleport(event.getTo());
-
         Bukkit.getPluginManager().callEvent(event);
 
         return event.getTo();

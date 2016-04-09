@@ -7,6 +7,7 @@ import me.binarybench.gameengine.common.utils.PlayerUtil;
 import me.binarybench.gameengine.common.utils.RandomUtil;
 import me.binarybench.gameengine.component.ListenerComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -73,7 +74,7 @@ public class LobbyComponent extends ListenerComponent implements Runnable {
     public void spawnPlayer(Player player)
     {
         PlayerUtil.resetPlayer(player);
-
+        player.setGameMode(GameMode.ADVENTURE);
         player.teleport(getSpawn());
     }
 

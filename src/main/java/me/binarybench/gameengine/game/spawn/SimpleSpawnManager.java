@@ -2,8 +2,11 @@ package me.binarybench.gameengine.game.spawn;
 
 import me.binarybench.gameengine.common.utils.FileUtil;
 import me.binarybench.gameengine.common.utils.LocationUtil;
+import me.binarybench.gameengine.common.utils.PlayerUtil;
 import me.binarybench.gameengine.common.utils.ServerUtil;
 import me.binarybench.gameengine.component.world.WorldManager;
+import me.binarybench.gameengine.game.spawn.event.PlayerSpawnEvent;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -23,9 +26,17 @@ public class SimpleSpawnManager implements SpawnManager {
 
     private int counter = 0;
 
+    private GameMode gameMode;
+
     public SimpleSpawnManager(WorldManager worldManager)
     {
+        this(worldManager, GameMode.SURVIVAL);
+    }
+
+    public SimpleSpawnManager(WorldManager worldManager, GameMode gameMode)
+    {
         this.worldManager = worldManager;
+        this.gameMode = gameMode;
         loadLocations(worldManager);
     }
 
@@ -40,7 +51,6 @@ public class SimpleSpawnManager implements SpawnManager {
         }
 
         YamlConfiguration mapdata = YamlConfiguration.loadConfiguration(file);
-
 
         for (String stringLocation : mapdata.getStringList("SpawnPoints"))
         {
@@ -71,8 +81,25 @@ public class SimpleSpawnManager implements SpawnManager {
         return new Location(getWorldManager().getWorld(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
+
+    @Override
+    public Location respawn(PlayerSpawnEvent event)
+    {
+        Player player = event.getPlayer();
+
+        player.setGameMode(getGameMode());
+        PlayerUtil.resetPlayer(player);
+
+        return SpawnManager.super.respawn(event);
+    }
+
     public WorldManager getWorldManager()
     {
         return worldManager;
+    }
+
+    public GameMode getGameMode()
+    {
+        return gameMode;
     }
 }
