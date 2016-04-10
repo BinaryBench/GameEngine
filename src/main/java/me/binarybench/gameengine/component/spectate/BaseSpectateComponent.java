@@ -122,11 +122,7 @@ public abstract class BaseSpectateComponent extends ListenerComponent implements
         }
     }
 
-    @Override
-    public Collection<Player> getPlayers()
-    {
-        return null;
-    }
+
 
     public boolean isJoinSpectate()
     {
@@ -142,6 +138,15 @@ public abstract class BaseSpectateComponent extends ListenerComponent implements
     {
         Bukkit.getPluginManager().callEvent(new PlayerAddEvent(playerHolder, player));
     }
+
+
+
+    @Override
+    public Collection<Player> getPlayers()
+    {
+        return this.spectaters;
+    }
+
 
     @Override
     public void setJoinSpectate(boolean joinSpectate)
@@ -165,6 +170,13 @@ public abstract class BaseSpectateComponent extends ListenerComponent implements
     {
         return playerHolder;
     }
+
+
+
+
+
+
+
 
     private class NonSpectateHolder implements PlayerHolder {
         @Override
