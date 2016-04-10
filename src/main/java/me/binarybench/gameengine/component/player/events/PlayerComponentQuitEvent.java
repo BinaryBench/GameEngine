@@ -10,8 +10,6 @@ import org.bukkit.event.HandlerList;
  */
 public class PlayerComponentQuitEvent extends PlayerRemoveEvent {
 
-    private static final HandlerList handlers = new HandlerList();
-
     public PlayerComponentQuitEvent(PlayerComponent playerComponent, Player player)
     {
         super(playerComponent, player);

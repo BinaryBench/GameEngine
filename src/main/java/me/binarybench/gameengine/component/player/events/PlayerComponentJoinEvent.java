@@ -10,8 +10,6 @@ import org.bukkit.event.HandlerList;
  */
 public class PlayerComponentJoinEvent extends PlayerAddEvent {
 
-    private static final HandlerList handlers = new HandlerList();
-
     public PlayerComponentJoinEvent(PlayerComponent playerComponent, Player player)
     {
         super(playerComponent, player);
