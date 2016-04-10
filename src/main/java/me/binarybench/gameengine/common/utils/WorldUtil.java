@@ -177,6 +177,8 @@ public class WorldUtil {
         for (Player player : world.getPlayers())
             player.kickPlayer("Welp, that didn't work...");
 
+        world.setAutoSave(false);
+
         if (Bukkit.getServer().unloadWorld(world, false)) {
             System.out.print("Successfully unloaded " + world.getName());
         } else {
