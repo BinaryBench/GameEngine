@@ -22,14 +22,14 @@ public class GameModeSpectateComponent extends BaseSpectateComponent {
     }
 
     @Override
-    public void onDisableSpectate(Player player)
+    public void onEnableSpectate(Player player)
     {
         PlayerUtil.resetPlayer(player);
         player.setGameMode(GameMode.SPECTATOR);
     }
 
     @Override
-    public void onEnableSpectate(Player player)
+    public void onDisableSpectate(Player player)
     {
 
     }

@@ -51,6 +51,7 @@ public abstract class BaseSpectateComponent extends ListenerComponent implements
         this.spectaters.add(player);
 
         //call enable
+        onEnableSpectate(player);
 
         return true;
     }
@@ -73,6 +74,7 @@ public abstract class BaseSpectateComponent extends ListenerComponent implements
         this.spectaters.remove(player);
 
         //call disable
+        onDisableSpectate(player);
 
         return true;
     }
@@ -91,12 +93,14 @@ public abstract class BaseSpectateComponent extends ListenerComponent implements
             Bukkit.getPluginManager().callEvent(new EnableSpectateEvent(this, player));
             this.spectaters.add(player);
             //call enable
+            onEnableSpectate(player);
         }
         else
         {
             fireAdd(getNonSpectateHolder(), player);
             Bukkit.getPluginManager().callEvent(new DisableSpectateEvent(this, player));
             //call disable
+            onDisableSpectate(player);
         }
     }
 
