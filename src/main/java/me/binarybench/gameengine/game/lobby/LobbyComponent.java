@@ -81,7 +81,6 @@ public class LobbyComponent extends ListenerComponent implements Runnable {
 
     public Location getSpawn()
     {
-
         double x = RandomUtil.randomDouble(-1, 2);
         double y = 60;
         double z = RandomUtil.randomDouble(-1, 2);
@@ -91,7 +90,12 @@ public class LobbyComponent extends ListenerComponent implements Runnable {
 
     public World getWorld()
     {
-        return worldSupplier.get();
+        World world = worldSupplier.get();
+
+        if (world == null)
+            System.err.println("NULL WORLD");
+
+        return world;
     }
 
     public PlayerHolder getPlayerHolder()

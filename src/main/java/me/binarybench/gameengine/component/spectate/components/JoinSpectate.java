@@ -15,7 +15,7 @@ public class JoinSpectate extends ListenerComponent {
     private SpectateComponent spectateComponent;
     private PlayerComponent playerComponent;
 
-    public JoinSpectate(SpectateComponent spectateComponent, PlayerComponent playerComponent)
+    public JoinSpectate(PlayerComponent playerComponent, SpectateComponent spectateComponent)
     {
         this.spectateComponent = spectateComponent;
         this.playerComponent = playerComponent;

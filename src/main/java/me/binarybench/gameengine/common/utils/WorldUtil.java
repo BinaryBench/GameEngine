@@ -132,7 +132,7 @@ public class WorldUtil {
             });
             return true;
         }
-        return deleteWorld(world,executorService, plugin, runAfter);
+        return deleteWorld(world, executorService, plugin, runAfter);
     }
 
     /**
@@ -197,7 +197,7 @@ public class WorldUtil {
                 e.printStackTrace();
             }
 
-        }, 1, TimeUnit.SECONDS);
+        }, 4, TimeUnit.SECONDS);
 
         return true;
     }

@@ -58,12 +58,15 @@ public class LobbyWorldComponent extends ListenerComponent implements WorldManag
     @Override
     public void onEnable()
     {
-        //WorldUtil.deleteWorld(getName(), getExecutorService(), Main.getPlugin(), () -> {
-            this.world = WorldUtil.createWorld(getSaveFile(), getName());
-        //});
 
+        world = WorldUtil.getWorld(getName());
 
-        // TODO TP players & jazz
+        if (world == null)
+             world = WorldUtil.createWorld(getSaveFile(), getName());
+
+        if (world != null)
+            world.setAutoSave(false);
+
     }
 
     @Override

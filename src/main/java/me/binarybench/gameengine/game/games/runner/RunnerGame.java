@@ -4,6 +4,7 @@ import me.binarybench.gameengine.component.player.PlayerComponent;
 import me.binarybench.gameengine.component.simple.*;
 import me.binarybench.gameengine.component.spectate.GameModeSpectateComponent;
 import me.binarybench.gameengine.component.spectate.components.DeathSpectate;
+import me.binarybench.gameengine.component.spectate.components.JoinSpectate;
 import me.binarybench.gameengine.component.spectate.components.SpectateInWorld;
 import me.binarybench.gameengine.game.FullGameComponentManager;
 import me.binarybench.gameengine.game.Game;
@@ -86,7 +87,9 @@ public class RunnerGame implements Game {
         gameStateComponentManager.addComponent(new NoBlockPlace(playerComponent), GameState.values());
         gameStateComponentManager.addComponent(new NoDropItem(playerComponent), GameState.values());
         gameStateComponentManager.addComponent(new NoPickUpItem(playerComponent), GameState.values());
+        gameStateComponentManager.addComponent(new NoHunger(playerComponent), GameState.values());
 
+        gameStateComponentManager.addComponent(new JoinSpectate(playerComponent, spectateComponent), GameState.PRE_GAME, GameState.IN_GAME, GameState.POST_GAME);
 
         gameStateComponentManager.addComponent(new NoDamage(playerComponent), GameState.LOBBY, GameState.PRE_GAME, GameState.POST_GAME);
         gameStateComponentManager.addComponent(new NoPvP(playerComponent), GameState.IN_GAME);
@@ -117,8 +120,7 @@ public class RunnerGame implements Game {
         //Victory Condition
         gameStateComponentManager.addComponent(new LMSVictoryCondition(spectateComponent.getNonSpectateHolder(), 1, playerComponent, () -> {
             gameStateManager.setGameState(GameState.POST_GAME);
-        }));
-
+        }), GameState.PRE_GAME, GameState.IN_GAME);
     }
 
     public ScheduledExecutorService getScheduledExecutorService()

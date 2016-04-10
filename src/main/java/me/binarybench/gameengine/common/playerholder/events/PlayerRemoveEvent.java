@@ -24,10 +24,7 @@ public class PlayerRemoveEvent extends Event {
         this.player = player;
     }
 
-    public static HandlerList getHandlerList()
-    {
-        return handlers;
-    }
+
 
     public PlayerHolder getPlayerHolder()
     {
@@ -37,6 +34,11 @@ public class PlayerRemoveEvent extends Event {
     public Player getPlayer()
     {
         return player;
+    }
+
+    public static HandlerList getHandlerList()
+    {
+        return handlers;
     }
 
     @Override

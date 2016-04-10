@@ -8,6 +8,7 @@ import me.binarybench.gameengine.common.utils.WorldUtil;
 import me.binarybench.gameengine.component.ListenerComponent;
 import me.binarybench.gameengine.game.events.GameEndEvent;
 import me.binarybench.gameengine.game.events.GameStartEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -89,13 +90,19 @@ public class SimpleWorldComponent extends ListenerComponent implements WorldMana
     {
         WorldUtil.deleteWorld(getName(), getExecutorService(), Main.getPlugin(), () -> {
             this.world = WorldUtil.createWorld(getSaveFile(), getName());
+
+            if (world != null)
+                this.world.setAutoSave(false);
         });
     }
 
     @Override
     public void onDisable()
     {
-        WorldUtil.deleteWorld(getWorld(), getExecutorService(), Main.getPlugin());
+        Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () ->
+        {
+            WorldUtil.deleteWorld(getWorld(), getExecutorService(), Main.getPlugin());
+        }, 40);
     }
 
 
