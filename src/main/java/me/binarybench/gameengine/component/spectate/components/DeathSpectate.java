@@ -41,7 +41,6 @@ public class DeathSpectate extends ListenerComponent {
         return getSpectateComponent().getNonSpectateHolder();
     }
 
-
     public SpectateComponent getSpectateComponent()
     {
         return spectateComponent;

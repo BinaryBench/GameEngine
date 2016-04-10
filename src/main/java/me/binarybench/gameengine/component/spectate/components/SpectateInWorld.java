@@ -1,5 +1,6 @@
 package me.binarybench.gameengine.component.spectate.components;
 
+import me.binarybench.gameengine.common.playerholder.events.PlayerAddEvent;
 import me.binarybench.gameengine.component.ListenerComponent;
 import me.binarybench.gameengine.component.spectate.SpectateComponent;
 import me.binarybench.gameengine.component.spectate.events.EnableSpectateEvent;
@@ -25,9 +26,9 @@ public class SpectateInWorld extends ListenerComponent {
     }
 
     @EventHandler
-    public void onSpectate(EnableSpectateEvent event)
+    public void onSpectate(PlayerAddEvent event)
     {
-        if (event.getPlayerHolder() != getSpectateComponent())
+        if (!event.getPlayerHolder().equals(getSpectateComponent().getSpectateHolder()))
             return;
 
         World world = getWorldSupplier().get();

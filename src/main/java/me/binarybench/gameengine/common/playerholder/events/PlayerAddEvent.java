@@ -13,23 +13,14 @@ import org.bukkit.event.HandlerList;
  */
 public class PlayerAddEvent extends Event {
 
-
-    private static final HandlerList handlers = new HandlerList();
     private PlayerHolder playerHolder;
     private Player player;
-
 
     public PlayerAddEvent(PlayerHolder playerHolder, Player player)
     {
         this.playerHolder = playerHolder;
         this.player = player;
     }
-
-    public static HandlerList getHandlerList()
-    {
-        return handlers;
-    }
-
     public PlayerHolder getPlayerHolder()
     {
         return this.playerHolder;
@@ -40,6 +31,12 @@ public class PlayerAddEvent extends Event {
         return player;
     }
 
+
+    private static final HandlerList handlers = new HandlerList();
+    public static HandlerList getHandlerList()
+    {
+        return handlers;
+    }
     @Override
     public HandlerList getHandlers()
     {

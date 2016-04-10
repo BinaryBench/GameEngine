@@ -1,43 +1,40 @@
 package me.binarybench.gameengine.component.spectate.components;
 
+import me.binarybench.gameengine.common.playerholder.PlayerHolder;
+import me.binarybench.gameengine.component.BaseComponent;
 import me.binarybench.gameengine.component.ListenerComponent;
 import me.binarybench.gameengine.component.player.PlayerComponent;
 import me.binarybench.gameengine.component.player.events.PlayerComponentJoinEvent;
 import me.binarybench.gameengine.component.spectate.SpectateComponent;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 /**
  * Created by Bench on 4/1/2016.
  */
-public class JoinSpectate extends ListenerComponent {
+public class JoinSpectate extends BaseComponent {
 
     private SpectateComponent spectateComponent;
-    private PlayerComponent playerComponent;
 
-    public JoinSpectate(PlayerComponent playerComponent, SpectateComponent spectateComponent)
+    public JoinSpectate(SpectateComponent spectateComponent)
     {
         this.spectateComponent = spectateComponent;
-        this.playerComponent = playerComponent;
     }
 
-
-    @EventHandler
-    public void onJoin(PlayerComponentJoinEvent event)
+    @Override
+    public void onEnable()
     {
-        if (event.getPlayerHolder() != getPlayerComponent())
-            return;
-        getSpectateComponent().enableSpectate(event.getPlayer());
+        getSpectateComponent().setJoinSpectate(true);
     }
 
+    @Override
+    public void onDisable()
+    {
+        getSpectateComponent().setJoinSpectate(false);
+    }
 
     public SpectateComponent getSpectateComponent()
     {
         return spectateComponent;
     }
 
-    public PlayerComponent getPlayerComponent()
-    {
-        return playerComponent;
-    }
 }

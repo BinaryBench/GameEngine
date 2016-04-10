@@ -37,4 +37,10 @@ public interface SpectateComponent {
     PlayerHolder getSpectateHolder();
 
     PlayerHolder getNonSpectateHolder();
+
+    PlayerHolder getDomainPlayerHolder();
+
+    boolean isJoinSpectate();
+
+    void setJoinSpectate(boolean joinSpectate);
 }
