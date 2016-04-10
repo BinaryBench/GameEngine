@@ -8,15 +8,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Bench on 3/31/2016.
  */
 public class LMSVictoryCondition extends ListenerComponent {
 
-    private LinkedList<Player> rank = new LinkedList<>();
+    private List<Player> rank = new ArrayList<>();
 
     private PlayerHolder playerHolder;
     private int endPlayersAmount;
@@ -35,10 +34,11 @@ public class LMSVictoryCondition extends ListenerComponent {
     {
         int playerCount = playerHolder.getPlayers().size() + offset;
 
-        if (playerCount <= endPlayersAmount)
+        if (playerCount <= getEndPlayersAmount())
         {
             whenDone.run();
         }
+
     }
 
     @EventHandler
@@ -46,28 +46,50 @@ public class LMSVictoryCondition extends ListenerComponent {
     {
         if (event.getPlayerHolder() != getPlayerHolder())
             return;
+        Player player = event.getPlayer();
+
+        rank.remove(player);
+        rank.add(event.getPlayer());
+
         checkEndGame(-1);
     }
 
     public void sendWinners()
     {
-        for (Player player : playerHolder)
-        {
-            rank.add(player);
-        }
-
         int counter = 0;
+        int score = 1;
+
+
+        List<Player> players = new ArrayList<>(getPlayerHolder().getPlayers());
+        players.removeAll(getRank());
+
         broadcast("----------");
         broadcast("");
-        for (Player player : getRank())
+
+        for (Player player : players)
         {
             counter++;
-            broadcast(counter + ". " + ChatColor.YELLOW + player.getName());
+            print(score, player);
             if (counter >= 3)
                 break;
         }
+        if (counter < 3)
+            for (Player player : getRank())
+            {
+                counter++;
+                score++;
+                print(score, player);
+                if (counter >= 3)
+                    break;
+            }
+
         broadcast("");
         broadcast("----------");
+    }
+
+    private void print(int rank, Player player)
+    {
+        broadcast(rank + ". " + ChatColor.YELLOW + player.getName());
     }
 
     @Override
@@ -97,7 +119,7 @@ public class LMSVictoryCondition extends ListenerComponent {
         return broadcast;
     }
 
-    public LinkedList<Player> getRank()
+    public List<Player> getRank()
     {
         return rank;
     }

@@ -89,7 +89,7 @@ public class RunnerGame implements Game {
         gameStateComponentManager.addComponent(new NoPickUpItem(playerComponent), GameState.values());
         gameStateComponentManager.addComponent(new NoHunger(playerComponent), GameState.values());
 
-        gameStateComponentManager.addComponent(new JoinSpectate(playerComponent, spectateComponent), GameState.PRE_GAME, GameState.IN_GAME, GameState.POST_GAME);
+        gameStateComponentManager.addComponent(new JoinSpectate(spectateComponent), GameState.PRE_GAME, GameState.IN_GAME, GameState.POST_GAME);
 
         gameStateComponentManager.addComponent(new NoDamage(playerComponent), GameState.LOBBY, GameState.PRE_GAME, GameState.POST_GAME);
         gameStateComponentManager.addComponent(new NoPvP(playerComponent), GameState.IN_GAME);
@@ -112,10 +112,10 @@ public class RunnerGame implements Game {
         gameStateComponentManager.addComponent(new FallingBlockKiller(worldManager), GameState.IN_GAME, GameState.POST_GAME);
 
         //Countdowns
-        gameStateComponentManager.addComponent(new PlayerGameStateCountdown(getScheduledExecutorService(), 20, gameStateManager, GameState.PRE_GAME, playerComponent, 1, 1), GameState.LOBBY);
-        gameStateComponentManager.addComponent(new GameStateCountdown(getScheduledExecutorService(), 10, gameStateManager, GameState.IN_GAME, playerComponent), GameState.PRE_GAME);
+        gameStateComponentManager.addComponent(new PlayerGameStateCountdown(getScheduledExecutorService(), 10, gameStateManager, GameState.PRE_GAME, playerComponent, 2, 1), GameState.LOBBY);
+        gameStateComponentManager.addComponent(new GameStateCountdown(getScheduledExecutorService(), 5, gameStateManager, GameState.IN_GAME, playerComponent), GameState.PRE_GAME);
 
-        gameStateComponentManager.addComponent(new GameStateCountdown(getScheduledExecutorService(), 10, gameStateManager, GameState.RESTARTING, playerComponent), GameState.POST_GAME);
+        gameStateComponentManager.addComponent(new GameStateCountdown(getScheduledExecutorService(), 5, gameStateManager, GameState.RESTARTING, playerComponent), GameState.POST_GAME);
 
         //Victory Condition
         gameStateComponentManager.addComponent(new LMSVictoryCondition(spectateComponent.getNonSpectateHolder(), 1, playerComponent, () -> {
