@@ -29,6 +29,7 @@ public class PlayerUtil {
 
         clearInv(player);
         clearPotionEffects(player);
+        player.resetMaxHealth();
         resetHealth(player);
         resetMaxHunger(player);
         resetWalkSpeed(player);
