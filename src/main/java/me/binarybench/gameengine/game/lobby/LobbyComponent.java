@@ -5,7 +5,10 @@ import me.binarybench.gameengine.common.playerholder.PlayerHolder;
 import me.binarybench.gameengine.common.playerholder.events.PlayerAddEvent;
 import me.binarybench.gameengine.common.utils.PlayerUtil;
 import me.binarybench.gameengine.common.utils.RandomUtil;
+import me.binarybench.gameengine.component.Component;
 import me.binarybench.gameengine.component.ListenerComponent;
+import me.binarybench.gameengine.component.simple.*;
+import me.binarybench.gameengine.game.gamestate.GameState;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -13,6 +16,9 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
@@ -28,10 +34,20 @@ public class LobbyComponent extends ListenerComponent implements Runnable {
 
     private Supplier<World> worldSupplier;
 
+    private List<Component> supComponents;
+
     public LobbyComponent(PlayerHolder playerHolder, Supplier<World> worldSupplier)
     {
         this.playerHolder = playerHolder;
         this.worldSupplier = worldSupplier;
+
+        supComponents = Arrays.asList(
+              new NoBlockBreak(playerHolder),
+              new NoBlockPlace(playerHolder),
+              new NoDropItem(playerHolder),
+              new NoPickUpItem(playerHolder),
+              new NoHunger(playerHolder)
+        );
     }
 
     @Override
@@ -39,12 +55,16 @@ public class LobbyComponent extends ListenerComponent implements Runnable {
     {
         getPlayerHolder().forEach(this::spawnPlayer);
         this.id = Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), this, 2, 2).getTaskId();
+
+        supComponents.forEach(Component::enable);
     }
 
     @Override
     public void onDisable()
     {
         Bukkit.getScheduler().cancelTask(this.id);
+
+        supComponents.forEach(Component::disable);
     }
 
 
