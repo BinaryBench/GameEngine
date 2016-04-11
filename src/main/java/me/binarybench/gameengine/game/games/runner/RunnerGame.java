@@ -11,7 +11,7 @@ import me.binarybench.gameengine.game.Game;
 import me.binarybench.gameengine.game.GameComponent;
 import me.binarybench.gameengine.game.countdown.GameStateCountdown;
 import me.binarybench.gameengine.game.countdown.PlayerGameStateCountdown;
-import me.binarybench.gameengine.game.games.runner.components.FallingBlockKiller;
+import me.binarybench.gameengine.component.simple.FallingBlockKiller;
 import me.binarybench.gameengine.game.games.runner.components.RunnerComponent;
 import me.binarybench.gameengine.game.gamestate.GameState;
 import me.binarybench.gameengine.game.gamestate.GameStateManager;
@@ -25,7 +25,6 @@ import me.binarybench.gameengine.game.victorycondition.LMSVictoryCondition;
 import me.binarybench.gameengine.component.world.GameInfoComponent;
 import me.binarybench.gameengine.component.world.SimpleWorldComponent;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.craftbukkit.libs.jline.console.completer.ArgumentCompleter;
 import org.bukkit.event.EventPriority;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -55,10 +54,10 @@ public class RunnerGame implements Game {
 
         SimpleWorldComponent worldManager = new SimpleWorldComponent(NAME, getScheduledExecutorService());
         SpawnManager spawnManager = new SimpleSpawnManager(worldManager);
-
         GameModeSpectateComponent spectateComponent = new GameModeSpectateComponent(getPlayerComponent());
-
         LobbyWorldComponent lobbyWorldComponent = new LobbyWorldComponent(gameComponent, getScheduledExecutorService());
+
+
 
         FullGameComponentManager fullGameComponentManager = new FullGameComponentManager(gameComponent);
 
@@ -69,8 +68,9 @@ public class RunnerGame implements Game {
                 "Run around and try not fall!"));
 
         fullGameComponentManager.addComponent(worldManager, EventPriority.LOW, EventPriority.HIGHEST);
-        fullGameComponentManager.addComponent(new WeatherComponent(worldManager));
         fullGameComponentManager.addComponent(lobbyWorldComponent, EventPriority.LOWEST, EventPriority.HIGH);
+
+        fullGameComponentManager.addComponent(new WeatherComponent(worldManager));
         fullGameComponentManager.addComponent(spectateComponent);
 
         fullGameComponentManager.addComponent(new SpectateInWorld(spectateComponent, worldManager));
@@ -89,13 +89,17 @@ public class RunnerGame implements Game {
         gameStateComponentManager.addComponent(new NoPickUpItem(playerComponent), GameState.values());
         gameStateComponentManager.addComponent(new NoHunger(playerComponent), GameState.values());
 
+
         gameStateComponentManager.addComponent(new JoinSpectate(spectateComponent), GameState.PRE_GAME, GameState.IN_GAME, GameState.POST_GAME);
+
 
         gameStateComponentManager.addComponent(new NoDamage(playerComponent), GameState.LOBBY, GameState.PRE_GAME, GameState.POST_GAME);
         gameStateComponentManager.addComponent(new NoPvP(playerComponent), GameState.IN_GAME);
 
+
         gameStateComponentManager.addComponent(new VoidKiller(spectateComponent.getNonSpectateHolder(), worldManager), GameState.PRE_GAME, GameState.IN_GAME);
         gameStateComponentManager.addComponent(new SpawnAtComponent(spawnManager, playerComponent), GameState.PRE_GAME);
+
 
         gameStateComponentManager.addComponent(new DeathSpectate(spectateComponent), GameState.PRE_GAME, GameState.IN_GAME, GameState.POST_GAME);
 

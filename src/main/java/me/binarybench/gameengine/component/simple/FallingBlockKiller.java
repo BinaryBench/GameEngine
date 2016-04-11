@@ -1,4 +1,4 @@
-package me.binarybench.gameengine.game.games.runner.components;
+package me.binarybench.gameengine.component.simple;
 
 import me.binarybench.gameengine.component.ListenerComponent;
 import org.bukkit.Effect;

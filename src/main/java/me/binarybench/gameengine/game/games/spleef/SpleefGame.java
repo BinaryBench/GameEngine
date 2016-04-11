@@ -13,8 +13,7 @@ import me.binarybench.gameengine.game.Game;
 import me.binarybench.gameengine.game.GameComponent;
 import me.binarybench.gameengine.game.countdown.GameStateCountdown;
 import me.binarybench.gameengine.game.countdown.PlayerGameStateCountdown;
-import me.binarybench.gameengine.game.games.runner.components.FallingBlockKiller;
-import me.binarybench.gameengine.game.games.runner.components.RunnerComponent;
+import me.binarybench.gameengine.component.simple.FallingBlockKiller;
 import me.binarybench.gameengine.game.games.spleef.components.SpleefComponent;
 import me.binarybench.gameengine.game.gamestate.GameState;
 import me.binarybench.gameengine.game.gamestate.GameStateComponentManager;
@@ -91,7 +90,6 @@ public class SpleefGame implements Game {
         gameStateComponentManager.addComponent(new NoBlockPlace(playerComponent), GameState.values());
         gameStateComponentManager.addComponent(new NoDropItem(playerComponent), GameState.values());
         gameStateComponentManager.addComponent(new NoPickUpItem(playerComponent), GameState.values());
-        gameStateComponentManager.addComponent(new NoHunger(playerComponent), GameState.values());
 
         gameStateComponentManager.addComponent(new JoinSpectate(spectateComponent), GameState.PRE_GAME, GameState.IN_GAME, GameState.POST_GAME);
 
