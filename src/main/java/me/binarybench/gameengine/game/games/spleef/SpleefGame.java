@@ -25,10 +25,12 @@ import me.binarybench.gameengine.game.spawn.SimpleSpawnManager;
 import me.binarybench.gameengine.game.spawn.SpawnAtComponent;
 import me.binarybench.gameengine.game.spawn.SpawnManager;
 import me.binarybench.gameengine.game.victorycondition.LMSVictoryCondition;
+import me.binarybench.gameengine.game.victorycondition.TimeVictoryCondition;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.event.EventPriority;
 
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Bench on 4/10/2016.
@@ -124,6 +126,10 @@ public class SpleefGame implements Game {
         gameStateComponentManager.addComponent(new LMSVictoryCondition(spectateComponent.getNonSpectateHolder(), 1, playerComponent, () -> {
             gameStateManager.setGameState(GameState.POST_GAME);
         }), GameState.PRE_GAME, GameState.IN_GAME);
+
+        gameStateComponentManager.addComponent(new TimeVictoryCondition(getPlayerComponent(), () -> {
+            gameStateManager.setGameState(GameState.POST_GAME);
+        }, getScheduledExecutorService(), 8, TimeUnit.MINUTES), GameState.IN_GAME);
     }
 
     public ScheduledExecutorService getScheduledExecutorService()

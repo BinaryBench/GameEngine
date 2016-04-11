@@ -19,12 +19,12 @@ public class SimpleArena {
     public SimpleArena(ScheduledExecutorService scheduledExecutorService)
     {
         this.playerComponent = new SimplePlayerComponent();
-        new SingleGameComponent(new RunnerGame(playerComponent, scheduledExecutorService));
+        new SingleGameComponent(new SpleefGame(playerComponent, scheduledExecutorService));
     }
-
 
     public PlayerComponent getPlayerComponent()
     {
         return playerComponent;
     }
+
 }
