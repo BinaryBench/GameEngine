@@ -80,7 +80,7 @@ public abstract class BaseSpectateComponent extends ListenerComponent implements
     }
 
     @EventHandler
-    private void onJoin(PlayerAddEvent event)
+    public void onJoin(PlayerAddEvent event)
     {
         if (!event.getPlayerHolder().equals(getDomainPlayerHolder()))
             return;
