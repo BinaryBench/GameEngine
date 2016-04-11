@@ -2,12 +2,9 @@ package me.binarybench.gameengine;
 
 import me.binarybench.gameengine.component.player.PlayerComponent;
 import me.binarybench.gameengine.component.player.SimplePlayerComponent;
-import me.binarybench.gameengine.game.SingleGameComponent;
-import me.binarybench.gameengine.game.games.runner.RunnerGame;
+import me.binarybench.gameengine.game.RotationGameComponent;
 import me.binarybench.gameengine.game.games.spleef.SpleefGame;
-import org.bukkit.entity.Player;
 
-import java.util.Collection;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
@@ -19,7 +16,7 @@ public class SimpleArena {
     public SimpleArena(ScheduledExecutorService scheduledExecutorService)
     {
         this.playerComponent = new SimplePlayerComponent();
-        new SingleGameComponent(new SpleefGame(playerComponent, scheduledExecutorService));
+        new RotationGameComponent(new SpleefGame(playerComponent, scheduledExecutorService));
     }
 
     public PlayerComponent getPlayerComponent()
