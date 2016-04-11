@@ -1,13 +1,18 @@
 package me.binarybench.gameengine;
 
 import me.binarybench.gameengine.common.utils.LocationUtil;
+import me.binarybench.gameengine.common.utils.WorldUtil;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
@@ -51,6 +56,7 @@ public class Main extends JavaPlugin implements Listener {
 
     }
 
+    private List<World> temporaryWorlds = new ArrayList<>();
 
     private static Main plugin;
 
@@ -68,6 +74,24 @@ public class Main extends JavaPlugin implements Listener {
         this.arena = new SimpleArena(this.scheduledExecutorService);
     }
 
+    public void onDisable()
+    {
+        for (World world : temporaryWorlds)
+        {
+            File folder = world.getWorldFolder();
+            WorldUtil.unloadWorld(world, false);
+            try
+            {
+                FileUtils.deleteDirectory(folder);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
     @EventHandler
     public void onJoin(PlayerJoinEvent event)
     {
@@ -76,7 +100,15 @@ public class Main extends JavaPlugin implements Listener {
     }
 
 
+    public static World createTemporaryWorld(File scrFile, String worldName)
+    {
+        World world = WorldUtil.createWorld(scrFile, worldName);
 
+        if (world != null)
+            getPlugin().temporaryWorlds.add(world);
+
+        return world;
+    }
 
 
     public static Main getPlugin()

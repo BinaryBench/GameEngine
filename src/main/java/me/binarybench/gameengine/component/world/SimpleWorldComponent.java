@@ -89,7 +89,7 @@ public class SimpleWorldComponent extends ListenerComponent implements WorldMana
     public void onEnable()
     {
         WorldUtil.deleteWorld(getName(), getExecutorService(), Main.getPlugin(), () -> {
-            this.world = WorldUtil.createWorld(getSaveFile(), getName());
+            this.world = Main.createTemporaryWorld(getSaveFile(), getName());
 
             if (world != null)
                 this.world.setAutoSave(false);

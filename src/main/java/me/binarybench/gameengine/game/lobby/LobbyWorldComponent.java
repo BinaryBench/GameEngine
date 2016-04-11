@@ -62,7 +62,7 @@ public class LobbyWorldComponent extends ListenerComponent implements WorldManag
         world = WorldUtil.getWorld(getName());
 
         if (world == null)
-             world = WorldUtil.createWorld(getSaveFile(), getName());
+             world = Main.createTemporaryWorld(getSaveFile(), getName());
 
         if (world != null)
             world.setAutoSave(false);
