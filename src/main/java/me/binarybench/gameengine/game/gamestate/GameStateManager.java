@@ -75,4 +75,9 @@ public class GameStateManager implements Listener {
         Bukkit.getPluginManager().callEvent(event);
         return true;
     }
+
+    public Runnable getRunnable(GameState toSet)
+    {
+        return () -> {setGameState(toSet);};
+    }
 }

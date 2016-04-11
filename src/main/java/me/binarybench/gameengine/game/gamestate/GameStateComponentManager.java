@@ -88,27 +88,34 @@ public class GameStateComponentManager implements Listener {
 
 
     //Add & Remove Component
-    public boolean addComponent(Component component, GameState gameState, GameState... gameStates)
+    public boolean add(Component component, GameState gameState, GameState... gameStates)
     {
-        return addComponents(Collections.singleton(component), ListUtil.append(gameState, gameStates));
+        return add(Collections.singleton(component), ListUtil.append(gameState, gameStates));
     }
 
-    public boolean addComponent(Component component, GameState[] gameStates)
+    public boolean add(Component component, GameState[] gameStates)
     {
-        return addComponents(Collections.singleton(component), Arrays.asList(gameStates));
+        return add(component, Arrays.asList(gameStates));
     }
 
-    public boolean addComponents(Collection<Component> components, GameState gameState, GameState... gameStates)
+    public boolean add(Component component, Collection<GameState> gameStates)
     {
-        return addComponents(components, ListUtil.append(gameState, gameStates));
+        return add(Collections.singleton(component), gameStates);
     }
 
-    public boolean addComponents(Collection<Component> components, GameState[] gameStates)
+    public boolean add(Collection<Component> components, GameState gameState, GameState... gameStates)
     {
-        return  addComponents(components, Arrays.asList(gameStates));
+        return add(components, ListUtil.append(gameState, gameStates));
     }
 
-    public boolean addComponents(Collection<Component> componentsToAdd, Collection<GameState> gameStates)
+    public boolean add(Collection<Component> components, GameState[] gameStates)
+    {
+        return  add(components, Arrays.asList(gameStates));
+    }
+
+
+
+    public boolean add(Collection<Component> componentsToAdd, Collection<GameState> gameStates)
     {
         boolean modified = false;
 
@@ -123,7 +130,20 @@ public class GameStateComponentManager implements Listener {
         return  modified;
     }
 
-    public boolean addComponents(Map<GameState, Collection<Component>> map)
+    public boolean add(Map<Component, Collection<GameState>> map)
+    {
+        boolean modified = false;
+
+        for (Map.Entry<Component, Collection<GameState>> entry : map.entrySet())
+        {
+            if (add(entry.getKey(), entry.getValue()))
+                modified = true;
+        }
+        return modified;
+    }
+
+    /*
+    public boolean add(Map<GameState, Collection<Component>> map)
     {
         boolean modified = false;
 
@@ -136,6 +156,7 @@ public class GameStateComponentManager implements Listener {
         }
         return modified;
     }
+    */
 
     public boolean removeComponent(Collection<Component> componentsToRemove)
     {

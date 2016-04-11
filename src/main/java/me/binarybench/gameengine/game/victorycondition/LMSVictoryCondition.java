@@ -22,6 +22,11 @@ public class LMSVictoryCondition extends ListenerComponent {
     private PlayerHolder broadcast;
     private Runnable whenDone;
 
+    public LMSVictoryCondition(PlayerHolder playerHolder, PlayerHolder broadcast, Runnable whenDone)
+    {
+        this(playerHolder, 1, broadcast, whenDone);
+    }
+
     public LMSVictoryCondition(PlayerHolder playerHolder, int endPlayersAmount, PlayerHolder broadcast, Runnable whenDone)
     {
         this.playerHolder = playerHolder;

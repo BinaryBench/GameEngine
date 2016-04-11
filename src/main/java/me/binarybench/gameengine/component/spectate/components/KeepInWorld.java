@@ -1,9 +1,9 @@
 package me.binarybench.gameengine.component.spectate.components;
 
+import me.binarybench.gameengine.common.playerholder.PlayerHolder;
 import me.binarybench.gameengine.common.playerholder.events.PlayerAddEvent;
 import me.binarybench.gameengine.component.ListenerComponent;
 import me.binarybench.gameengine.component.spectate.SpectateComponent;
-import me.binarybench.gameengine.component.spectate.events.EnableSpectateEvent;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,41 +13,49 @@ import java.util.function.Supplier;
 /**
  * Created by Bench on 4/5/2016.
  */
-public class SpectateInWorld extends ListenerComponent {
+public class KeepInWorld extends ListenerComponent {
 
-    private SpectateComponent spectateComponent;
+    private PlayerHolder playerHolder;
 
     private Supplier<World> worldSupplier;
 
-    public SpectateInWorld(SpectateComponent spectateComponent, Supplier<World> worldSupplier)
+    public KeepInWorld(PlayerHolder playerHolder, Supplier<World> worldSupplier)
     {
-        this.spectateComponent = spectateComponent;
+        this.playerHolder = playerHolder;
         this.worldSupplier = worldSupplier;
     }
 
-    @EventHandler
-    public void onSpectate(PlayerAddEvent event)
+    @Override
+    public void onEnable()
     {
-        if (!event.getPlayerHolder().equals(getSpectateComponent().getSpectateHolder()))
+        getPlayerHolder().forEach(this::checkPlayer);
+    }
+
+    @EventHandler
+    public void onJoin(PlayerAddEvent event)
+    {
+        if (!event.getPlayerHolder().equals(getPlayerHolder()))
             return;
 
+        checkPlayer(event.getPlayer());
+    }
+
+    public void checkPlayer(Player player)
+    {
         World world = getWorldSupplier().get();
 
         if (world == null)
             return;
 
-        Player player = event.getPlayer();
-
         if (!player.getWorld().equals(world))
         {
             player.teleport(world.getSpawnLocation());
         }
-
     }
 
-    public SpectateComponent getSpectateComponent()
+    public PlayerHolder getPlayerHolder()
     {
-        return spectateComponent;
+        return playerHolder;
     }
 
     public Supplier<World> getWorldSupplier()

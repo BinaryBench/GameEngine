@@ -5,7 +5,7 @@ import me.binarybench.gameengine.component.simple.*;
 import me.binarybench.gameengine.component.spectate.GameModeSpectateComponent;
 import me.binarybench.gameengine.component.spectate.components.DeathSpectate;
 import me.binarybench.gameengine.component.spectate.components.JoinSpectate;
-import me.binarybench.gameengine.component.spectate.components.SpectateInWorld;
+import me.binarybench.gameengine.component.spectate.components.KeepInWorld;
 import me.binarybench.gameengine.component.world.GameInfoComponent;
 import me.binarybench.gameengine.component.world.SimpleWorldComponent;
 import me.binarybench.gameengine.game.FullGameComponentManager;
@@ -76,7 +76,7 @@ public class SpleefGame implements Game {
 
         fullGameComponentManager.addComponent(spectateComponent);
 
-        fullGameComponentManager.addComponent(new SpectateInWorld(spectateComponent, worldManager));
+        fullGameComponentManager.addComponent(new KeepInWorld(spectateComponent, worldManager));
 
 
         //GameState Components
@@ -86,47 +86,47 @@ public class SpleefGame implements Game {
 
 
         //Stop Everything
-        gameStateComponentManager.addComponent(new NoBlockBreak(playerComponent), GameState.values());
-        gameStateComponentManager.addComponent(new NoBlockPlace(playerComponent), GameState.values());
-        gameStateComponentManager.addComponent(new NoDropItem(playerComponent), GameState.values());
-        gameStateComponentManager.addComponent(new NoPickUpItem(playerComponent), GameState.values());
+        gameStateComponentManager.add(new NoBlockBreak(playerComponent), GameState.values());
+        gameStateComponentManager.add(new NoBlockPlace(playerComponent), GameState.values());
+        gameStateComponentManager.add(new NoDropItem(playerComponent), GameState.values());
+        gameStateComponentManager.add(new NoPickUpItem(playerComponent), GameState.values());
 
-        gameStateComponentManager.addComponent(new JoinSpectate(spectateComponent), GameState.PRE_GAME, GameState.IN_GAME, GameState.POST_GAME);
+        gameStateComponentManager.add(new JoinSpectate(spectateComponent), GameState.PRE_GAME, GameState.IN_GAME, GameState.POST_GAME);
 
-        gameStateComponentManager.addComponent(new NoDamage(playerComponent), GameState.LOBBY, GameState.PRE_GAME, GameState.POST_GAME);
-        gameStateComponentManager.addComponent(new NoPvP(playerComponent), GameState.IN_GAME);
+        gameStateComponentManager.add(new NoDamage(playerComponent), GameState.LOBBY, GameState.PRE_GAME, GameState.POST_GAME);
+        gameStateComponentManager.add(new NoPvP(playerComponent), GameState.IN_GAME);
 
-        gameStateComponentManager.addComponent(new VoidKiller(spectateComponent.getNonSpectateHolder(), worldManager), GameState.PRE_GAME, GameState.IN_GAME);
-        gameStateComponentManager.addComponent(new SpawnAtComponent(spawnManager, playerComponent), GameState.PRE_GAME);
+        gameStateComponentManager.add(new VoidKiller(spectateComponent.getNonSpectateHolder(), worldManager), GameState.PRE_GAME, GameState.IN_GAME);
+        gameStateComponentManager.add(new SpawnAtComponent(spawnManager, playerComponent), GameState.PRE_GAME);
 
-        gameStateComponentManager.addComponent(new DeathSpectate(spectateComponent), GameState.PRE_GAME, GameState.IN_GAME, GameState.POST_GAME);
+        gameStateComponentManager.add(new DeathSpectate(spectateComponent), GameState.PRE_GAME, GameState.IN_GAME, GameState.POST_GAME);
 
 
 
 
         //Lobby Component
-        gameStateComponentManager.addComponent(new LobbyComponent(playerComponent, lobbyWorldComponent), GameState.LOBBY);
+        gameStateComponentManager.add(new LobbyComponent(playerComponent, lobbyWorldComponent), GameState.LOBBY);
 
 
 
         //Game Specific
-        gameStateComponentManager.addComponent(new SpleefComponent(spectateComponent.getNonSpectateHolder(), worldManager), GameState.IN_GAME);
-        gameStateComponentManager.addComponent(new FallingBlockKiller(worldManager), GameState.IN_GAME, GameState.POST_GAME);
+        gameStateComponentManager.add(new SpleefComponent(spectateComponent.getNonSpectateHolder(), worldManager), GameState.IN_GAME);
+        gameStateComponentManager.add(new FallingBlockKiller(worldManager), GameState.IN_GAME, GameState.POST_GAME);
 
 
 
         //Countdowns
-        gameStateComponentManager.addComponent(new PlayerGameStateCountdown(getScheduledExecutorService(), 10, gameStateManager, GameState.PRE_GAME, playerComponent, 2, 1), GameState.LOBBY);
-        gameStateComponentManager.addComponent(new GameStateCountdown(getScheduledExecutorService(), 5, gameStateManager, GameState.IN_GAME, playerComponent), GameState.PRE_GAME);
+        gameStateComponentManager.add(new PlayerGameStateCountdown(getScheduledExecutorService(), 10, gameStateManager, GameState.PRE_GAME, playerComponent, 2, 1), GameState.LOBBY);
+        gameStateComponentManager.add(new GameStateCountdown(getScheduledExecutorService(), 5, gameStateManager, GameState.IN_GAME, playerComponent), GameState.PRE_GAME);
 
-        gameStateComponentManager.addComponent(new GameStateCountdown(getScheduledExecutorService(), 5, gameStateManager, GameState.RESTARTING, playerComponent), GameState.POST_GAME);
+        gameStateComponentManager.add(new GameStateCountdown(getScheduledExecutorService(), 5, gameStateManager, GameState.RESTARTING, playerComponent), GameState.POST_GAME);
 
         //Victory Condition
-        gameStateComponentManager.addComponent(new LMSVictoryCondition(spectateComponent.getNonSpectateHolder(), 1, playerComponent, () -> {
+        gameStateComponentManager.add(new LMSVictoryCondition(spectateComponent.getNonSpectateHolder(), 1, playerComponent, () -> {
             gameStateManager.setGameState(GameState.POST_GAME);
         }), GameState.PRE_GAME, GameState.IN_GAME);
 
-        gameStateComponentManager.addComponent(new TimeVictoryCondition(getPlayerComponent(), () -> {
+        gameStateComponentManager.add(new TimeVictoryCondition(getPlayerComponent(), () -> {
             gameStateManager.setGameState(GameState.POST_GAME);
         }, getScheduledExecutorService(), 8, TimeUnit.MINUTES), GameState.IN_GAME);
     }
