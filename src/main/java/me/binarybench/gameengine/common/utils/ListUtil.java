@@ -1,9 +1,6 @@
 package me.binarybench.gameengine.common.utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by BinaryBench on 3/24/2016.
@@ -31,6 +28,13 @@ public class ListUtil {
         return list;
     }
 
+    public static <T> List<T> append(T single, T[] array)
+    {
+        List<T> list = new ArrayList<T>(Arrays.asList(array));
+        list.add(single);
+
+        return list;
+    }
 
 
 }

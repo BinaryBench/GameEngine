@@ -1,5 +1,6 @@
 package me.binarybench.gameengine.game.gamestate;
 
+import me.binarybench.gameengine.common.utils.ListUtil;
 import me.binarybench.gameengine.game.GameComponent;
 import me.binarybench.gameengine.game.gamestate.events.GameStateChangeEvent;
 import me.binarybench.gameengine.Main;
@@ -87,29 +88,27 @@ public class GameStateComponentManager implements Listener {
 
 
     //Add & Remove Component
-    public boolean addComponent(Component component, GameState... gameStates)
+    public boolean addComponent(Component component, GameState gameState, GameState... gameStates)
     {
-        return addComponents(Arrays.asList(gameStates), Collections.singleton(component));
+        return addComponents(Collections.singleton(component), ListUtil.append(gameState, gameStates));
     }
 
-    public boolean addComponent(GameState gameState, Component component)
+    public boolean addComponent(Component component, GameState[] gameStates)
     {
-        return addComponents(Collections.singleton(gameState), Collections.singleton(component));
+        return addComponents(Collections.singleton(component), Arrays.asList(gameStates));
     }
 
-    public boolean addComponents(GameState gameState, Component component, Component... componentsToAdd)
+    public boolean addComponents(Collection<Component> components, GameState gameState, GameState... gameStates)
     {
-        List<Component> array = new ArrayList<>(Arrays.asList(componentsToAdd));
-        array.add(component);
-        return addComponents(Collections.singleton(gameState), array);
+        return addComponents(components, ListUtil.append(gameState, gameStates));
     }
 
-    public boolean addComponents(GameState[] gameStates, Component... componentsToAdd)
+    public boolean addComponents(Collection<Component> components, GameState[] gameStates)
     {
-        return addComponents(Arrays.asList(gameStates), Arrays.asList(componentsToAdd));
+        return  addComponents(components, Arrays.asList(gameStates));
     }
 
-    public boolean addComponents(Collection<GameState> gameStates, Collection<Component> componentsToAdd)
+    public boolean addComponents(Collection<Component> componentsToAdd, Collection<GameState> gameStates)
     {
         boolean modified = false;
 
