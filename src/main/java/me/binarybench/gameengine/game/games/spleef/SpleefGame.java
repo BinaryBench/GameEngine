@@ -113,6 +113,7 @@ public class SpleefGame implements Game {
 
         //Game Specific
         gameStateComponentManager.addComponent(new SpleefComponent(spectateComponent.getNonSpectateHolder(), worldManager), GameState.IN_GAME);
+        gameStateComponentManager.addComponent(new FallingBlockKiller(worldManager), GameState.IN_GAME, GameState.POST_GAME);
 
 
 
