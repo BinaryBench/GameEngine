@@ -17,7 +17,7 @@ import me.binarybench.gameengine.component.simple.FallingBlockKiller;
 import me.binarybench.gameengine.game.games.spleef.components.SpleefComponent;
 import me.binarybench.gameengine.game.gamestate.GameState;
 import me.binarybench.gameengine.game.gamestate.GameStateComponentManager;
-import me.binarybench.gameengine.game.gamestate.GameStateManager;
+import me.binarybench.gameengine.game.gamestate.GameStateComponent;
 import me.binarybench.gameengine.game.lobby.LobbyComponent;
 import me.binarybench.gameengine.game.lobby.LobbyWorldComponent;
 import me.binarybench.gameengine.game.spawn.SimpleSpawnManager;
@@ -52,7 +52,7 @@ public class SpleefGame implements Game {
     public void start(GameComponent gameComponent)
     {
 
-        GameStateManager gameStateManager = new GameStateManager(gameComponent);
+        GameStateComponent gameStateComponent = new GameStateComponent(gameComponent);
 
         SimpleWorldComponent worldManager = new SimpleWorldComponent(NAME, getScheduledExecutorService());
 
@@ -80,7 +80,7 @@ public class SpleefGame implements Game {
 
 
         //GameState Components
-        GameStateComponentManager gameStateComponentManager = new GameStateComponentManager(gameComponent, gameStateManager);
+        GameStateComponentManager gameStateComponentManager = new GameStateComponentManager(gameComponent, gameStateComponent);
 
 
 
@@ -116,18 +116,18 @@ public class SpleefGame implements Game {
 
 
         //Countdowns
-        gameStateComponentManager.add(new PlayerGameStateCountdown(getScheduledExecutorService(), 10, gameStateManager, GameState.PRE_GAME, playerComponent, 2, 1), GameState.LOBBY);
-        gameStateComponentManager.add(new GameStateCountdown(getScheduledExecutorService(), 5, gameStateManager, GameState.IN_GAME, playerComponent), GameState.PRE_GAME);
+        gameStateComponentManager.add(new PlayerGameStateCountdown(getScheduledExecutorService(), 10, gameStateComponent, GameState.PRE_GAME, playerComponent, 2, 1), GameState.LOBBY);
+        gameStateComponentManager.add(new GameStateCountdown(getScheduledExecutorService(), 5, gameStateComponent, GameState.IN_GAME, playerComponent), GameState.PRE_GAME);
 
-        gameStateComponentManager.add(new GameStateCountdown(getScheduledExecutorService(), 5, gameStateManager, GameState.RESTARTING, playerComponent), GameState.POST_GAME);
+        gameStateComponentManager.add(new GameStateCountdown(getScheduledExecutorService(), 5, gameStateComponent, GameState.RESTARTING, playerComponent), GameState.POST_GAME);
 
         //Victory Condition
         gameStateComponentManager.add(new LMSVictoryCondition(spectateComponent.getNonSpectateHolder(), 1, playerComponent, () -> {
-            gameStateManager.setGameState(GameState.POST_GAME);
+            gameStateComponent.setGameState(GameState.POST_GAME);
         }), GameState.PRE_GAME, GameState.IN_GAME);
 
         gameStateComponentManager.add(new TimeVictoryCondition(getPlayerComponent(), () -> {
-            gameStateManager.setGameState(GameState.POST_GAME);
+            gameStateComponent.setGameState(GameState.POST_GAME);
         }, getScheduledExecutorService(), 8, TimeUnit.MINUTES), GameState.IN_GAME);
     }
 

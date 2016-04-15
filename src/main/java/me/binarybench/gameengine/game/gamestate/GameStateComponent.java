@@ -1,5 +1,6 @@
 package me.binarybench.gameengine.game.gamestate;
 
+import me.binarybench.gameengine.component.BaseComponent;
 import me.binarybench.gameengine.game.events.GameStartEvent;
 import me.binarybench.gameengine.Main;
 import me.binarybench.gameengine.game.GameComponent;
@@ -13,35 +14,41 @@ import org.bukkit.event.Listener;
 /**
  * Created by BinaryBench on 3/20/2016.
  */
-public class GameStateManager implements Listener {
+public class GameStateComponent extends BaseComponent implements Listener {
 
-    private GameState gameState;
+    private GameState gameState = GameState.RESTARTING;
 
-    private GameComponent gameComponent;
+    private Runnable onEnd;
 
-    public GameStateManager(GameComponent gameComponent)
+    public GameStateComponent(Runnable onEnd)
     {
-        this.gameComponent = gameComponent;
-        Main.registerEvents(this);
+        this.onEnd = onEnd;
+    }
+
+    @Override
+    public void onEnable()
+    {
+        this.setGameState(GameState.LOBBY);
+    }
+
+    @Override
+    public void onDisable()
+    {
+        this.privateSetGameState(GameState.RESTARTING);
     }
 
     //Listeners
     @EventHandler
     public void onStart(GameStartEvent event)
     {
-        if (event.getComponent() != this.gameComponent)
-            return;
+
         this.setGameState(GameState.LOBBY);
     }
 
     @EventHandler(priority = EventPriority.LOW)
     public void onEnd(GameEndEvent event)
     {
-        if (event.getComponent() != this.gameComponent)
-            return;
-
         privateSetGameState(GameState.RESTARTING);
-        Main.unregisterEvents(this);
     }
 
 
@@ -54,10 +61,9 @@ public class GameStateManager implements Listener {
     {
         if (toGameState == GameState.RESTARTING)
         {
-            gameComponent.endGame();
+            this.onEnd.run();
             return true;
         }
-
         return privateSetGameState(toGameState);
     }
 

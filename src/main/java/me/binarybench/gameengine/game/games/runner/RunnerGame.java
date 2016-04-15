@@ -10,7 +10,7 @@ import me.binarybench.gameengine.game.GameComponent;
 import me.binarybench.gameengine.component.simple.FallingBlockKiller;
 import me.binarybench.gameengine.game.games.runner.components.RunnerComponent;
 import me.binarybench.gameengine.game.gamestate.GameState;
-import me.binarybench.gameengine.game.gamestate.GameStateManager;
+import me.binarybench.gameengine.game.gamestate.GameStateComponent;
 import me.binarybench.gameengine.game.gamestate.GameStateComponentManager;
 import me.binarybench.gameengine.game.lobby.LobbyComponent;
 import me.binarybench.gameengine.game.lobby.LobbyWorldComponent;
@@ -46,8 +46,7 @@ public class RunnerGame implements Game {
     public void start(GameComponent gameComponent)
     {
 
-        GameStateManager gameStateManager = new GameStateManager(gameComponent);
-
+        GameStateComponent gameStateComponent = new GameStateComponent(gameComponent);
         SimpleWorldComponent worldManager = new SimpleWorldComponent(NAME, getScheduledExecutorService());
         SpawnManager spawnManager = new SimpleSpawnManager(worldManager);
         GameModeSpectateComponent spectateComponent = new GameModeSpectateComponent(getPlayerComponent());
@@ -55,7 +54,7 @@ public class RunnerGame implements Game {
 
         //Component Managers
         FullGameComponentManager fullGameComponentManager = new FullGameComponentManager(gameComponent);
-        GameStateComponentManager gameStateComponentManager = new GameStateComponentManager(gameComponent, gameStateManager);
+        GameStateComponentManager gameStateComponentManager = new GameStateComponentManager(gameComponent, gameStateComponent);
 
         fullGameComponentManager.addComponent(new GameInfoComponent(worldManager, getPlayerComponent(),
                 ChatColor.YELLOW + "Game: " + ChatColor.WHITE + "Runner",
@@ -64,8 +63,9 @@ public class RunnerGame implements Game {
 
         fullGameComponentManager.addComponent(worldManager, EventPriority.LOW, EventPriority.HIGHEST);
 
-
+        //Probably will want this built into the world manager.
         fullGameComponentManager.addComponent(new WeatherComponent(worldManager));
+
         fullGameComponentManager.addComponent(spectateComponent);
 
         //LOBBY Components
@@ -90,14 +90,14 @@ public class RunnerGame implements Game {
         gameStateComponentManager.add(new FallingBlockKiller(worldManager), GameState.IN_GAME, GameState.POST_GAME);
 
         //Countdowns
-        gameStateComponentManager.add(ComponentCreater.getDefaultCountdowns(playerComponent, gameStateManager, getScheduledExecutorService()));
+        gameStateComponentManager.add(ComponentCreater.getDefaultCountdowns(playerComponent, gameStateComponent, getScheduledExecutorService()));
 
         //Victory Condition
         gameStateComponentManager.add(
                 new LMSVictoryCondition(
                         spectateComponent.getNonSpectateHolder(),
                         playerComponent,
-                        gameStateManager.getRunnable(GameState.POST_GAME)),
+                        gameStateComponent.getRunnable(GameState.POST_GAME)),
                 GameState.PRE_GAME,
                 GameState.IN_GAME);
     }

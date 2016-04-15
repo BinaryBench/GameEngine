@@ -6,7 +6,7 @@ import me.binarybench.gameengine.common.playerholder.PlayerHolder;
 import me.binarybench.gameengine.common.playerholder.events.PlayerAddEvent;
 import me.binarybench.gameengine.common.playerholder.events.PlayerRemoveEvent;
 import me.binarybench.gameengine.game.gamestate.GameState;
-import me.binarybench.gameengine.game.gamestate.GameStateManager;
+import me.binarybench.gameengine.game.gamestate.GameStateComponent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -20,9 +20,9 @@ public class PlayerGameStateCountdown extends GameStateCountdown implements List
     private int startThreshold;
     private int stopThreshold;
 
-    public PlayerGameStateCountdown(ScheduledExecutorService scheduler, int startTime, GameStateManager gameStateManager, GameState gameStateToSet, PlayerHolder playerHolder, int startThreshold, int stopThreshold)
+    public PlayerGameStateCountdown(ScheduledExecutorService scheduler, int startTime, GameStateComponent gameStateComponent, GameState gameStateToSet, PlayerHolder playerHolder, int startThreshold, int stopThreshold)
     {
-        super(scheduler, startTime, gameStateManager, gameStateToSet, playerHolder);
+        super(scheduler, startTime, gameStateComponent, gameStateToSet, playerHolder);
         this.startThreshold = startThreshold;
         this.stopThreshold = stopThreshold;
     }

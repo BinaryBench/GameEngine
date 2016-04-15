@@ -11,7 +11,7 @@ import me.binarybench.gameengine.component.world.WorldManager;
 import me.binarybench.gameengine.game.countdown.GameStateCountdown;
 import me.binarybench.gameengine.game.countdown.PlayerGameStateCountdown;
 import me.binarybench.gameengine.game.gamestate.GameState;
-import me.binarybench.gameengine.game.gamestate.GameStateManager;
+import me.binarybench.gameengine.game.gamestate.GameStateComponent;
 
 import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
@@ -47,14 +47,14 @@ public class ComponentCreater {
 
     }
 
-    public static Map<Component, Collection<GameState>> getDefaultCountdowns(PlayerComponent playerComponent, GameStateManager gameStateManager, ScheduledExecutorService scheduledExecutorService)
+    public static Map<Component, Collection<GameState>> getDefaultCountdowns(PlayerComponent playerComponent, GameStateComponent gameStateComponent, ScheduledExecutorService scheduledExecutorService)
     {
         Map<Component, Collection<GameState>> map = new HashMap<>();
 
-        map.put(new PlayerGameStateCountdown(scheduledExecutorService, 10, gameStateManager, GameState.PRE_GAME, playerComponent, 2, 1), Collections.singleton(GameState.LOBBY));
+        map.put(new PlayerGameStateCountdown(scheduledExecutorService, 10, gameStateComponent, GameState.PRE_GAME, playerComponent, 2, 1), Collections.singleton(GameState.LOBBY));
 
-        map.put(new GameStateCountdown(scheduledExecutorService, 5, gameStateManager, GameState.IN_GAME, playerComponent), Collections.singleton(GameState.PRE_GAME));
-        map.put(new GameStateCountdown(scheduledExecutorService, 5, gameStateManager, GameState.RESTARTING, playerComponent), Collections.singleton(GameState.POST_GAME));
+        map.put(new GameStateCountdown(scheduledExecutorService, 5, gameStateComponent, GameState.IN_GAME, playerComponent), Collections.singleton(GameState.PRE_GAME));
+        map.put(new GameStateCountdown(scheduledExecutorService, 5, gameStateComponent, GameState.RESTARTING, playerComponent), Collections.singleton(GameState.POST_GAME));
 
         return map;
 
