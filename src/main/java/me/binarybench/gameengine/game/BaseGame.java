@@ -50,7 +50,7 @@ public abstract class BaseGame extends BaseComponent {
         this.onEnd = onEnd;
         this.playerComponent = playerComponent;
         this.scheduledExecutorService = scheduledExecutorService;
-
+        this.gameComponents = new ArrayList<>();
 
         this.gameStateComponent = new GameStateComponent(onEnd);
         this.worldManager = new SimpleWorldComponent(getName(), getScheduledExecutorService());

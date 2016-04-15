@@ -3,6 +3,7 @@ package me.binarybench.gameengine;
 import me.binarybench.gameengine.component.player.PlayerComponent;
 import me.binarybench.gameengine.component.player.SimplePlayerComponent;
 import me.binarybench.gameengine.game.RotationGameComponent;
+import me.binarybench.gameengine.game.SimpleGameManager;
 import me.binarybench.gameengine.game.games.runner.RunnerGame;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -16,7 +17,8 @@ public class SimpleArena {
     public SimpleArena(ScheduledExecutorService scheduledExecutorService)
     {
         this.playerComponent = new SimplePlayerComponent();
-        new RotationGameComponent(new RunnerGame(playerComponent, scheduledExecutorService));
+        new SimpleGameManager(playerComponent, scheduledExecutorService);
+        //new RotationGameComponent(new RunnerGame(playerComponent, scheduledExecutorService));
     }
 
     public PlayerComponent getPlayerComponent()

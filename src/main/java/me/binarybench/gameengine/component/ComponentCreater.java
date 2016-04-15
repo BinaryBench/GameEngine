@@ -51,7 +51,7 @@ public class ComponentCreater {
     {
         Map<Component, Collection<GameState>> map = new HashMap<>();
 
-        map.put(new PlayerGameStateCountdown(scheduledExecutorService, 10, gameStateComponent, GameState.PRE_GAME, playerComponent, 2, 1), Collections.singleton(GameState.LOBBY));
+        map.put(new PlayerGameStateCountdown(scheduledExecutorService, 10, gameStateComponent, GameState.PRE_GAME, playerComponent, 1, 1), Collections.singleton(GameState.LOBBY));
 
         map.put(new GameStateCountdown(scheduledExecutorService, 5, gameStateComponent, GameState.IN_GAME, playerComponent), Collections.singleton(GameState.PRE_GAME));
         map.put(new GameStateCountdown(scheduledExecutorService, 5, gameStateComponent, GameState.RESTARTING, playerComponent), Collections.singleton(GameState.POST_GAME));
