@@ -1,6 +1,7 @@
 package me.binarybench.gameengine.game.gamestate;
 
 import me.binarybench.gameengine.common.utils.ListUtil;
+import me.binarybench.gameengine.component.ListenerComponent;
 import me.binarybench.gameengine.game.GameComponent;
 import me.binarybench.gameengine.game.gamestate.events.GameStateChangeEvent;
 import me.binarybench.gameengine.Main;
@@ -14,18 +15,16 @@ import java.util.*;
 /**
  * Created by BinaryBench on 3/24/2016.
  */
-public class GameStateComponentManager implements Listener {
+public class GameStateComponentManager extends ListenerComponent {
 
     private GameStateComponent gameStateComponent;
 
-    private GameComponent gameComponent;
 
     private Map<GameState, Set<Component>> components = new HashMap<>();
 
-    public GameStateComponentManager(GameComponent gameComponent, GameStateComponent gameStateComponent)
+    public GameStateComponentManager(GameStateComponent gameStateComponent)
     {
         this.gameStateComponent = gameStateComponent;
-        this.gameComponent = gameComponent;
 
         for (GameState gameState : GameState.values())
         {
@@ -69,22 +68,14 @@ public class GameStateComponentManager implements Listener {
 
     }
 
-
-
-    @EventHandler
-    public void onEndGame(GameEndEvent event)
+    @Override
+    public void onDisable()
     {
-        if (event.getComponent() != this.gameComponent)
-            return;
-
         for (Set<Component> set : this.components.values())
             set.forEach(Component::disable);
 
-        Main.unregisterEvents(this);
+        super.onDisable();
     }
-
-
-
 
 
     //Add & Remove Component
@@ -158,7 +149,7 @@ public class GameStateComponentManager implements Listener {
     }
     */
 
-    public boolean removeComponent(Collection<Component> componentsToRemove)
+    public boolean remove(Collection<Component> componentsToRemove)
     {
         boolean modified = false;
 
