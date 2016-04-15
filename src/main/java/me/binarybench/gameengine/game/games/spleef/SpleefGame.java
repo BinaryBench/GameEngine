@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Bench on 4/10/2016.
  */
-public class SpleefGame implements Game {
+public class SpleefGame {} /* implements Game {
 
     public static final String NAME = "Spleef";
 
@@ -141,3 +141,4 @@ public class SpleefGame implements Game {
         return playerComponent;
     }
 }
+*/
